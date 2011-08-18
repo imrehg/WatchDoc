@@ -1,0 +1,306 @@
+{
+  "extName": {
+    "message": "WatchDoc",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Notifies you if your Google Docs change",
+    "description": "Extension description"
+  },
+  "extTitle": {
+    "message": "WatchDoc",
+    "description": "Extension title"
+  },
+
+
+
+
+  "messageNoFeedItems": {
+    "message": "There are no feed items.",
+    "description": "Message when there are no feed items."
+  },
+  "messageNeedLogIn": {
+    "message": "You need to login to see your Feed.",
+    "description": "The subtitle when the user is not logged in."
+  },
+  "messageSavedOptions": {
+    "message": "Successfully saved your settings.",
+    "description": "The message displayed after the user saves the settings."
+  },
+  "buttonLogin": {
+    "message": "Login",
+    "description": "The text for the login button."
+  },
+  "buttonLogout": {
+    "message": "Logout",
+    "description": "The text for the logout button."
+  },
+  "buttonSave": {
+    "message": "Save",
+    "description": "The text for the save button."
+  },
+  "titleWhichEventTypes": {
+    "message": "Event types to show in the Feed:",
+    "description": "The title for the section for event type selection."
+  },
+  "titleWhichFeedTypes": {
+    "message": "Feed types to show in the Feed:",
+    "description": "The title for the section for feed type selection."
+  },
+  "label_video_uploaded": {
+    "message": "Uploaded Videos",
+    "description": "The label for the checkbox for uploaded videos."
+  },
+  "label_video_favorited": {
+    "message": "Favorited Videos",
+    "description": "The label for the checkbox for favorited videos."
+  },
+  "label_video_rated": {
+    "message": "Rated Videos",
+    "description": "The label for the checkbox for rated videos."
+  },
+  "label_video_liked": {
+    "message": "Liked Videos",
+    "description": "The label for the checkbox for liked videos."
+  },
+  "label_video_commented": {
+    "message": "Commented Videos",
+    "description": "The label for the checkbox for commented videos."
+  },
+  "label_load_friend_feed": {
+    "message": "Videos from Friends",
+    "description": "The label for the checkbox for whether to load videos from friends."
+  },
+  "label_load_subscription_feed": {
+    "message": "Videos from Subscriptions",
+    "description": "The label for the checkbox for whether to load videos from subscriptions."
+  },
+  "eventType_video_uploaded": {
+    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> uploaded a video.",
+    "description": "The entry title when a user uploads a new video.",
+    "placeholders": {
+      "url": {
+         "content": "$1",
+         "example": "http://www.youtube.com/user/slavegoogle"
+      },
+      "username": {
+         "content": "$2",
+         "example": "slavegoogle"
+      }
+    }
+  },
+  "eventType_video_favorited": {
+    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> favorited a video.",
+    "description": "The entry title when a user favorites a video.",
+    "placeholders": {
+      "url": {
+         "content": "$1",
+         "example": "http://www.youtube.com/user/slavegoogle"
+      },
+      "username": {
+         "content": "$2",
+         "example": "slavegoogle"
+      }
+    }
+  },
+  "eventType_video_rated": {
+    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> rated a video.",
+    "description": "The entry title when a user rates a video.",
+    "placeholders": {
+      "url": {
+         "content": "$1",
+         "example": "http://www.youtube.com/user/slavegoogle"
+      },
+      "username": {
+         "content": "$2",
+         "example": "slavegoogle"
+      }
+    }
+  },
+  "eventType_video_liked": {
+    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> liked a video.",
+    "description": "The entry title when a user likes a video.",
+    "placeholders": {
+      "url": {
+         "content": "$1",
+         "example": "http://www.youtube.com/user/slavegoogle"
+      },
+      "username": {
+         "content": "$2",
+         "example": "slavegoogle"
+      }
+    }
+  },
+  "eventType_video_commented": {
+    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> commented on a video.",
+    "description": "The entry title when a user comments on a video.",
+    "placeholders": {
+      "url": {
+         "content": "$1",
+         "example": "http://www.youtube.com/user/slavegoogle"
+      },
+      "username": {
+         "content": "$2",
+         "example": "slavegoogle"
+      }
+    }
+  },
+  "yearAgo": {
+    "message": "1 year ago",
+    "description": "Timestamp singular - 1 year since an event."
+  },
+  "monthAgo": {
+    "message": "1 month ago",
+    "description": "Timestamp singular - 1 month since an event."
+  },
+  "weekAgo": {
+    "message": "1 week ago",
+    "description": "Timestamp singular - 1 week since an event."
+  },
+  "dayAgo": {
+    "message": "1 day ago",
+    "description": "Timestamp singular - 1 day since an event."
+  },
+  "hourAgo": {
+    "message": "1 hour ago",
+    "description": "Timestamp singular - 1 hour since an event."
+  },
+  "minuteAgo": {
+    "message": "1 minute ago",
+    "description": "Timestamp singular - 1 minute since an event."
+  },
+  "secondAgo": {
+    "message": "1 second ago",
+    "description": "Timestamp singular - 1 second since an event."
+  },
+  "yearsAgo": {
+    "message": "$count$ years ago",
+    "description": "Timestamp plural - years since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "monthsAgo": {
+    "message": "$count$ months ago",
+    "description": "Timestamp plural - months since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "weeksAgo": {
+    "message": "$count$ weeks ago",
+    "description": "Timestamp plural - weeks since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "daysAgo": {
+    "message": "$count$ days ago",
+    "description": "Timestamp plural - days since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "hoursAgo": {
+    "message": "$count$ hours ago",
+    "description": "Timestamp plural - hours since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "minutesAgo": {
+    "message": "$count$ minutes ago",
+    "description": "Timestamp plural - minutes since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "secondsAgo": {
+    "message": "$count$ seconds ago",
+    "description": "Timestamp plural - seconds since an event.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "3"
+      }
+    }
+  },
+  "viewCount": {
+    "message": "$count$ views",
+    "description": "The number of views for a video.",
+    "placeholders": {
+      "count": {
+         "content": "$1",
+         "example": "123,456"
+      }
+    }
+  },
+  "labelMinutes": {
+    "message": "minutes",
+    "description": "The text for the metric label for the options page."
+  },
+  "labelPollingInterval": {
+    "message": "Polling interval",
+    "description": "The label for an option field."
+  },
+  "labelNumFeedItems": {
+    "message": "Number of feed items to retrieve",
+    "description": "The label for an option field."
+  },
+  "labelNumFeedItemsShown": {
+    "message": "Number of feed items to show",
+    "description": "The label for an option field."
+  },
+  "labelUnreadCount": {
+    "message": "Unread count represents",
+    "description": "The label for an option field."
+  },
+  "labelUnreadCountOnlyNew": {
+    "message": "New videos",
+    "description": "The value for an option field."
+  },
+  "labelUnreadCountEverything": {
+    "message": "All videos",
+    "description": "The value for an option field."
+  },
+  "labelOpenInNewTab": {
+    "message": "Open each video in its own tab",
+    "description": "The label for an option field."
+  },
+  "errorInvalidOptionValue": {
+    "message": "Invalid value for $optionName$. Please specify a value between $optionValueMin$ and $optionValueMax$.",
+    "description": "The error message when a user specifies a wrong option value.",
+    "placeholders": {
+      "optionName": {
+        "content": "$1",
+        "example": "pollingInterval"
+      },
+      "optionValueMin": {
+        "content": "$2",
+        "example": "1"
+      },
+      "optionValueMax": {
+        "content": "$3",
+        "example": "60"
+      }
+    }
+  }
+}

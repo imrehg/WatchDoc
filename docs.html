@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--
+ * Copyright 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author Slave Jovanovski (slave@google.com)
+ *
+ *
+-->
+<html>
+  <head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="feeds.css" />
+    <script type="text/javascript" src="googledocs.js"></script>
+
+    <script type="text/javascript">
+
+      function initialize() {
+        var gdocs = chrome.extension.getBackgroundPage().gdocs;
+        var loginButton = document.getElementById('login_button');
+        loginButton.addEventListener('mousedown', function () {
+          gdocs.login();
+        });
+        var logoutButton = document.getElementById('logout_button');
+        logoutButton.addEventListener('mousedown', function() {
+          gdocs.logout();
+          window.close();
+        });
+
+        var titleText = chrome.i18n.getMessage('titleFeedPage');
+        var h1Title = document.getElementById('title');
+        h1Title.innerHTML = titleText;
+        document.title = titleText;
+
+        if (gdocs.isLoggedIn()) {
+          logoutButton.innerHTML = chrome.i18n.getMessage('buttonLogout');
+          logoutButton.style.display = '';
+          gdocs.getTheFeed_();
+          var feedDom = document.getElementById('feed');
+          var feedEntryTemplate = document.getElementsByClassName('feed-entry-template')[0];
+          feedDom.innerHTML = gdocs.buildFeedDom(feedEntryTemplate).innerHTML;
+        <!--   var feedEntryUsers = document.getElementsByClassName('feed-entry-user'); -->
+        <!--   var videoAuthors = document.getElementsByClassName('feed-entry-video-from-username'); -->
+        <!--   var videos = document.getElementsByClassName('feed-entry-video-thumb'); -->
+        <!--   var videoTitles = document.getElementsByClassName('feed-entry-video-long-title-anchor'); -->
+        <!--   var removeIcons = document.getElementsByClassName('feed-entry-remove'); -->
+
+        <!--   for (var i = 0; i < feedEntryUsers.length; ++i) { -->
+        <!--     feedEntryUsers[i].addEventListener('mousedown', function(e) { -->
+        <!--       youtube.openInTab(e.currentTarget.href); -->
+        <!--     }); -->
+        <!--   } -->
+
+        <!--   for (var i = 0; i < videoAuthors.length; ++i) { -->
+        <!--     videoAuthors[i].addEventListener('mousedown', function(e) { -->
+        <!--       youtube.openInTab(e.currentTarget.href); -->
+        <!--     }); -->
+        <!--   } -->
+        <!--   for (var i = 0; i < videos.length; ++i) { -->
+        <!--     videos[i].addEventListener('mousedown', function(e) { -->
+        <!--       youtube.openInTab(e.currentTarget.href); -->
+        <!--     }); -->
+        <!--   } -->
+        <!--   for (var i = 0; i < videoTitles.length; ++i) { -->
+        <!--     videoTitles[i].addEventListener('mousedown', function(e) { -->
+        <!--       youtube.openInTab(e.currentTarget.href); -->
+        <!--     }); -->
+        <!--   } -->
+        <!--   for (var i = 0; i < removeIcons.length; ++i) { -->
+        <!--     removeIcons[i].addEventListener('mousedown', function(e) { -->
+        <!--       var entry = e.currentTarget.parentNode; -->
+        <!--       var itemId = Util.getFirstElementByClass(entry, 'feed-entry-item-id'); -->
+        <!--       youtube.removeFeedEntry(itemId.name); -->
+        <!--       entry.parentNode.removeChild(entry); -->
+        <!--     }); -->
+        <!--   } -->
+        } else {
+
+
+          loginButton.innerHTML = chrome.i18n.getMessage('buttonLogin');
+          loginButton.style.display = '';
+	
+          var feedDom = document.getElementById('feed');
+          var needLoginH2 = document.createElement('h2');
+          needLoginH2.className = 'needLogin';
+          needLoginH2.innerHTML = chrome.i18n.getMessage('messageNeedLogin');
+          var needLoginDiv = document.createElement('div');
+          needLoginDiv.appendChild(needLoginH2);
+          feedDom.innerHTML = needLoginDiv.innerHTML;
+        }
+        <!-- youtube.resetNumNewItems(); -->
+      }
+    </script>
+  </head>
+  <body onload='initialize()'>
+    <div class="feed-entry-template">
+      <span class="feed-entry-remove"></span>
+      <a class="feed-entry-item-id"></a>
+      <div class="feed-entry-title">
+        <img class="feed-entry-action-icon" src="img/pixel.gif">
+        <span class="feed-entry-title-text"></span>
+        <span class="feed-entry-timestamp"></span>
+      </div>
+      <div class="feed-entry-video-cell-template">
+        <div class="feed-entry-video-entry">
+          <a class="feed-entry-video-thumb">
+            <span class="feed-entry-video-img-span">
+              <img class="feed-entry-video-img">
+            </span>
+            <span class="feed-entry-video-time"></span>
+          </a>
+          <div class="feed-entry-video-main-content">
+            <div class="feed-entry-video-title">
+              <div class="feed-entry-video-long-title">
+                <a class="feed-entry-video-long-title-anchor"></a>
+              </div>
+              <div class="feed-entry-video-description"></div>
+              <div class="feed-entry-video-facets">
+                <span class="feed-entry-video-added-time"></span>
+                <span class="feed-entry-video-num-views"></span>
+                <span class="feed-entry-video-username">
+                  <a class="feed-entry-video-from-username"></a>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="feed-entry-video-entry-clear"></div>
+        </div>
+      </div>
+    </div>
+    <div id='main'>
+      <h1 id='title'></h1>
+      <div id='feed'></div>
+      <button id='login_button' style='display: none;'></button>
+      <button id='logout_button' style='display: none;'></button>
+    </div>
+  </body>
+</html>

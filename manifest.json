@@ -1,0 +1,19 @@
+{
+  "name": "__MSG_extName__",
+  "version": "0.0.1",
+  "description": "__MSG_extDescription__",
+  "default_locale": "en",
+  "background_page": "background.html",
+  "browser_action": {
+    "default_icon": "img/doc.png",
+    "default_title": "__MSG_extTitle__",
+    "popup": "docs.html"
+  },
+  "permissions": [
+    "tabs",
+    "https://docs.youtube.com/",
+    "https://www.google.com/accounts/OAuthGetRequestToken",
+    "https://www.google.com/accounts/OAuthAuthorizeToken",
+    "https://www.google.com/accounts/OAuthGetAccessToken"
+  ]
+}
