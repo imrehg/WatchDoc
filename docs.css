@@ -1,0 +1,227 @@
+/**
+ * Copyright 2010 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * @author Slave Jovanovski (slave@google.com)
+ *
+ */
+
+body {
+  font-family: Arial,Helvetica,sans-serif;
+  font-size: 12px;
+}
+p {
+  font-weight: bold;
+}
+
+a {
+  color: #0033CC;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+div#main {
+  text-align: center;
+}
+
+div#feed {
+  text-align: left;
+  margin-right: 10px;
+}
+
+div#feed h2 {
+  text-align: center;
+  min-width: 350px;
+}
+
+div.feed-entry-template {
+  display: none;
+}
+
+div.feed-entry {
+  padding: 5px 0px 10px 0px;
+  width: 400px;
+}
+
+span.feed-entry-remove {
+  width: 14px;
+  height: 14px;
+  float: right;
+  background: transparent url("img/icon-remove.png");
+  margin: 2px;
+  cursor: pointer;
+  display: none;
+}
+
+div.feed-entry:hover span.feed-entry-remove {
+  display: block;
+  background-color: black;
+}
+
+div.feed-entry-title {
+  color: #333333;
+  font-weight: bold;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+img.feed-entry-action-icon {
+  cursor: default;
+  height: 18px;
+  margin-right: 4px;
+  vertical-align: middle;
+  width: 18px;
+}
+
+img.message-sprite {
+  background-attachment: scroll;
+  background-color: transparent;
+  background-image: url("img/message-icons.png");
+  background-repeat: repeat-x;
+  border: 0 none;
+  padding: 0;
+}
+
+img.message-sprite.video_favorited {
+ background-position: 0px 0px;
+}
+
+img.message-sprite.video_rated {
+ background-position: -20px 0px;
+}
+
+img.message-sprite.video_liked {
+ background-position: -20px 0px;
+}
+
+img.message-sprite.video_uploaded {
+ background-position: -40px 0px;
+}
+
+img.message-sprite.video_commented {
+ background-position: -80px 0px;
+}
+
+span.feed-entry-timestamp {
+  color: #666666;
+  font-size: 11px;
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+div.feed-entry-video-cell {
+}
+
+div.feed-entry-video-entry {
+  padding-left: 25px;
+}
+
+a.feed-entry-video-thumb {
+  background-color: white;
+  float: left;
+  position: relative;
+  height:54px;
+  width:96px;
+  border: 1px solid lightGrey;
+  border-bottom-left-radius: 3px 3px;
+  border-bottom-right-radius: 3px 3px;
+  border-top-left-radius: 3px 3px;
+  border-top-right-radius: 3px 3px;
+  display: block;
+  overflow: hidden;
+  padding: 4px;
+}
+
+span.feed-entry-video-img-span {
+  display: block;
+  overflow: hidden;
+  position: relative;
+  height: 54px;
+  width: 96px;
+}
+
+span.feed-entry-video-img-span img {
+  width: 96px;
+  left: 0px;
+  top: -6px;
+  cursor: pointer;
+  display: block;
+  outline: none;
+  position: absolute;
+}
+
+span.feed-entry-video-time {
+  background-color: black;
+  border-bottom-left-radius: 3px 3px;
+  border-bottom-right-radius: 3px 3px;
+  border-top-left-radius: 3px 3px;
+  border-top-right-radius: 3px 3px;
+  color: white !important;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  height: 14px;
+  line-height: 14px;
+  opacity: 0.75;
+  padding: 0px 4px;
+  vertical-align: top;
+  margin-right: 0px;
+  margin-top: 0px;
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+
+div.feed-entry-video-main-content {
+  width: 259px;
+  float: left;
+  overflow: hidden;
+  padding-left: 10px;
+  padding-top: 2px;
+}
+
+div.feed-entry-video-long-title {
+  font-size: 13px;
+  font-weight: bold;
+  height: 17px;
+  overflow: hidden;
+}
+
+div.feed-entry-video-long-title a {
+  float: left;
+}
+
+div.feed-entry-video-description {
+  color: #666;
+  margin-top: 3px;
+  max-height: 30px;
+  overflow: hidden;
+}
+
+div.feed-entry-video-facets {
+  margin-top: 3px;
+  color: #666;
+  font-size: 11px;
+}
+
+div.feed-entry-video-facets span {
+  margin-right: 12px;
+}
+
+div.feed-entry-video-entry-clear {
+  clear: left;
+}
