@@ -76,6 +76,11 @@ GoogleDocs.prototype.onAuthorized_ = function() {
   // this.getTheFeed_();
 };
 
+GoogleDocs.prototype.resetNumNewItems = function() {
+  this.numNewItems_ = 0;
+  this.setVisualState();
+};
+
 /**
  * Logs out the user.
  */
