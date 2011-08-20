@@ -167,7 +167,9 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     for (var i = 0; i < feedItems.length; ++i) {
       var feedItem = feedItems[i];
       var itemId = feedItem['id'] && feedItem['id']['$t'];
-      if (!this.feedMap_[itemId] && !localStorage['rm-' + itemId]) {
+      if (!this.feedMap_[itemId] &&
+	  !localStorage['rm-' + itemId] &&
+	  (feedItem['gd$lastViewed']['$t'] < feedItem['updated']['$t'])) {
         this.feedItems_.push(feedItem);
         this.feedMap_[itemId] = {
           'item': feedItem,
