@@ -283,6 +283,17 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   Util.setChildHTML(domFeedEntry, 'feed-entry-title-text', feedEntryTitle);
   Util.setChildHTML(domFeedEntry, 'feed-entry-timestamp',
                     '(' + Util.formatTimeSince(feedEntryTimestamp) + ')');
+
+  var docUrl = '';
+  for (var i = 0; i < feedItem['link'].length; ++i) {
+      if (feedItem['link'][i]['rel'] == "alternate") {
+	  docUrl = feedItem['link'][i]['href'];
+      }
+  }
+  Util.setAnchorHref(domFeedEntry, 'docs-entry-link', docUrl);
+  var modifiedBy = feedItem['gd$lastModifiedBy']['$t'];
+  Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', modifiedBy);
+
   // Util.setName(domFeedEntry, 'feed-entry-item-id', itemId);
 
   // if (videoInfo) {
@@ -386,6 +397,32 @@ Util.setChildHTML = function(parent, childCssClass, html) {
   var el = Util.getFirstElementByClass(parent, childCssClass);
   if (el) {
     el.innerHTML = html;
+  }
+};
+
+/**
+ * Sets the source of a child img tag with a given class name.
+ * @param {Element} parent The element which contains the child.
+ * @param {string} childCssClass The css class of the child.
+ * @param {string} imageSrc The image source.
+ */
+Util.setImageSrc = function(parent, childCssClass, imageSrc) {
+  var el = Util.getFirstElementByClass(parent, childCssClass);
+  if (el) {
+    el.src = imageSrc;
+  }
+};
+
+/**
+ * Sets the href of an child anchor with a given class name.
+ * @param {Element} parent The element which contains the child.
+ * @param {string} childCssClass The css class of the child.
+ * @param {string} imageSrc The image source.
+ */
+Util.setAnchorHref = function(parent, childCssClass, href) {
+  var el = Util.getFirstElementByClass(parent, childCssClass);
+  if (el) {
+    el.href = href;
   }
 };
 
