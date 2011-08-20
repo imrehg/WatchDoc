@@ -187,8 +187,8 @@ GoogleDocs.prototype.shouldShowFeedItem_ = function(feedItem, prefs) {
  */
 GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
   var div = document.createElement('div');
+  var count = 0;
   if (!!this.feedItems_.length) {
-    var count = 0;
     var maxItemsToShow = this.options_['numFeedItemsShown'];
     for (var i = 0; i < this.feedItems_.length; ++i) {
 	// if (i == 0) {
@@ -210,11 +210,14 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
         console.log('Exception ' + e);
       }
     }
-  } else {
+  }
+
+  if (count == 0) {
     var noItems = document.createElement('h2');
     noItems.innerHTML = chrome.i18n.getMessage('messageNoFeedItems');
     div.appendChild(noItems);
   }
+
   return div;
 };
 
