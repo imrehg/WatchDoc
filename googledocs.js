@@ -69,6 +69,14 @@ GoogleDocs.prototype.login = function() {
 };
 
 /**
+ * Executed when a user has been authorized.
+ */
+GoogleDocs.prototype.onAuthorized_ = function() {
+  this.setVisualState();
+  // this.getTheFeed_();
+};
+
+/**
  * Logs out the user.
  */
 GoogleDocs.prototype.logout = function() {
