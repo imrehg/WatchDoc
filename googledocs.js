@@ -329,7 +329,7 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   //       'feed-entry-video-cell-template');
   //   Util.setCssClass(videoInfoElement, 'feed-entry-video-cell');
   // }
-  // Util.setCssClass(domFeedEntry, 'feed-entry');
+  Util.setCssClass(domFeedEntry, 'feed-entry');
   return domFeedEntry;
 };
 
@@ -424,6 +424,10 @@ Util.setAnchorHref = function(parent, childCssClass, href) {
   if (el) {
     el.href = href;
   }
+};
+
+Util.setCssClass = function(element, cssClassName) {
+  element.className = cssClassName;
 };
 
 Util.formatTimeSince = function(timeString) {
