@@ -54,6 +54,12 @@ GoogleDocs.prototype.oauth_;
 GoogleDocs.prototype.options_;
 
 /**
+ * The id of the interval used for polling.
+ * @type {number}
+ */
+GoogleDocs.prototype.pollingIntervalId_;
+
+/**
  * @return {Object} The configuration options.
  */
 GoogleDocs.prototype.getOptions = function() {
@@ -125,7 +131,13 @@ GoogleDocs.prototype.initialize = function() {
  * Starts polling for feed items.
  */
 GoogleDocs.prototype.startPolling = function() {
-    alert("Started Polling!");
+  if (this.pollingIntervalId_) {
+    window.clearInterval(this.pollingIntervalId_);
+  }
+  this.getTheFeed_();
+  this.pollingIntervalId_ = window.setInterval(
+      Util.bind(this.getTheFeed_, this),
+      this.options_['pollingInterval'] * 60000);
 };
 
 GoogleDocs.META_URL = 'https://docs.google.com/feeds/default/private/full';
