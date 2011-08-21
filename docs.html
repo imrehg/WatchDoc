@@ -50,6 +50,15 @@
           var feedDom = document.getElementById('feed');
           var feedEntryTemplate = document.getElementsByClassName('feed-entry-template')[0];
           feedDom.innerHTML = gdocs.buildFeedDom(feedEntryTemplate).innerHTML;
+
+          var docTitles = document.getElementsByClassName('docs-entry-link');
+
+          for (var i = 0; i < docTitles.length; ++i) {
+            docTitles[i].addEventListener('mousedown', function(e) {
+              gdocs.openInTab(e.currentTarget.href);
+            });
+          }
+
         <!--   var feedEntryUsers = document.getElementsByClassName('feed-entry-user'); -->
         <!--   var videoAuthors = document.getElementsByClassName('feed-entry-video-from-username'); -->
         <!--   var videos = document.getElementsByClassName('feed-entry-video-thumb'); -->

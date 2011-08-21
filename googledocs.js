@@ -499,3 +499,8 @@ Util.formatTimeSince = function(timeString) {
 //   }
 //   return result;
 // };
+
+
+GoogleDocs.prototype.openInTab = function(url) {
+    chrome.tabs.create({'url': url} );
+};
