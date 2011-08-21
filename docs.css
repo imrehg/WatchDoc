@@ -81,39 +81,47 @@ div.feed-entry-title {
 
 img.feed-entry-action-icon {
   cursor: default;
-  height: 18px;
+  height: 11px;
   margin-right: 4px;
   vertical-align: middle;
-  width: 18px;
+  width: 11px;
 }
 
 img.message-sprite {
   background-attachment: scroll;
   background-color: transparent;
-  background-image: url("img/message-icons.png");
+  background-image: url("img/docs-icons.png");
   background-repeat: repeat-x;
   border: 0 none;
   padding: 0;
 }
 
-img.message-sprite.video_favorited {
+img.message-sprite.document {
  background-position: 0px 0px;
 }
 
-img.message-sprite.video_rated {
- background-position: -20px 0px;
+img.message-sprite.presentation {
+ background-position: -11px 0px;
 }
 
-img.message-sprite.video_liked {
- background-position: -20px 0px;
+img.message-sprite.spreadsheet {
+ background-position: -22px 0px;
 }
 
-img.message-sprite.video_uploaded {
- background-position: -40px 0px;
+img.message-sprite.form {
+ background-position: -33px 0px;
 }
 
-img.message-sprite.video_commented {
- background-position: -80px 0px;
+img.message-sprite.drawing {
+ background-position: -44px 0px;
+}
+
+img.message-sprite.collection {
+ background-position: -55px 0px;
+}
+
+img.message-sprite.pdf {
+ background-position: -66px 0px;
 }
 
 span.feed-entry-timestamp {

@@ -60,6 +60,15 @@ GoogleDocs.prototype.getOptions = function() {
   return this.options_;
 };
 
+GoogleDocs.SUPPORTED_DOC_TYPES = [
+    'document',
+    'presentation',
+    'spreadsheet',
+    'form',
+    'drawing',
+    'collection',
+    'pdf'
+];
 
 /**
  * Logs in the user.
@@ -276,10 +285,7 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
     var feedEntryTitle = feedItem['title']['$t'];
   // // Build the basic DOM for the feed entry from the template.
   var domFeedEntry = template.cloneNode(true);
-  // var actionIcon = Util.getFirstElementByClass(domFeedEntry,
-  //                                              'feed-entry-action-icon');
-  // Util.setCssClass(actionIcon,
-  //                  'feed-entry-action-icon message-sprite ' + eventType);
+
   Util.setChildHTML(domFeedEntry, 'feed-entry-title-text', feedEntryTitle);
   Util.setChildHTML(domFeedEntry, 'feed-entry-timestamp',
                     '(' + Util.formatTimeSince(feedEntryTimestamp) + ')');
@@ -290,6 +296,24 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
 	  docUrl = feedItem['link'][i]['href'];
       }
   }
+
+  // Setup icon
+  var actionIcon = Util.getFirstElementByClass(domFeedEntry,
+                                               'feed-entry-action-icon');
+  var docType = '';
+  for (var i = 0; i < feedItem['category'].length; ++i) {
+      if (feedItem['category'][i]['scheme'] == "http://schemas.google.com/g/2005#kind") {
+	  docType = feedItem['category'][i]['label'];
+	  break;
+      }
+  }
+  if (GoogleDocs.SUPPORTED_DOC_TYPES.indexOf(docType) == -1) {
+      docType = 'document';
+  }
+  Util.setCssClass(actionIcon,
+                   'feed-entry-action-icon message-sprite ' + docType);
+
+
   Util.setAnchorHref(domFeedEntry, 'docs-entry-link', docUrl);
   var modifiedBy = feedItem['gd$lastModifiedBy']['$t'];
   Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', modifiedBy);
