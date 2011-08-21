@@ -188,6 +188,13 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     for (var i = 0; i < feedItems.length; ++i) {
       var feedItem = feedItems[i];
       var itemId = feedItem['id'] && feedItem['id']['$t'];
+      if (this.feedMap_[itemId]) {
+          if (this.feedMap_[itemId]['item']['updated']['$t'] < feedItem['updated']['$t']) {
+              // remove old version and add new one!
+              this.feedItems_.splice(this.feedItems_.indexOf(this.feedMap_[itemId]['item']), 1);
+	      delete this.feedMap_[itemId];
+          }
+      }
       if (!this.feedMap_[itemId] &&
 	  !localStorage['rm-' + itemId] &&
 	  (feedItem['gd$lastViewed']['$t'] < feedItem['updated']['$t'])) {
