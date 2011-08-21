@@ -43,6 +43,12 @@
         h1Title.innerHTML = titleText;
         document.title = titleText;
 
+        var docsHomeLink = document.getElementById('docs-home-link');
+        docsHomeLink.addEventListener('mousedown', function(e) {
+              gdocs.openInTab(e.currentTarget.href);
+        });
+
+
         if (gdocs.isLoggedIn()) {
           logoutButton.innerHTML = chrome.i18n.getMessage('buttonLogout');
           logoutButton.style.display = '';
@@ -99,7 +105,9 @@
 
           loginButton.innerHTML = chrome.i18n.getMessage('buttonLogin');
           loginButton.style.display = '';
-	
+
+          docsHomeLink.style.display = 'none';
+
           var feedDom = document.getElementById('feed');
           var needLoginH2 = document.createElement('h2');
           needLoginH2.className = 'needLogin';
@@ -129,6 +137,9 @@
     </div>
     <div id='main'>
       <h1 id='title'></h1>
+      <div id='docs-home'>
+       <a id='docs-home-link' href="https://docs.google.com/#home">Go to your Google Docs home</a>
+      </div>
       <div id='feed'></div>
       <button id='login_button' style='display: none;'></button>
       <button id='logout_button' style='display: none;'></button>
