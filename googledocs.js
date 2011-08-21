@@ -335,7 +335,7 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
 
   Util.setAnchorHref(domFeedEntry, 'docs-entry-link', docUrl);
   var modifiedBy = feedItem['gd$lastModifiedBy']['$t'];
-  Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', modifiedBy);
+  Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', 'by ' + modifiedBy);
 
   // Util.setName(domFeedEntry, 'feed-entry-item-id', itemId);
 
@@ -473,75 +473,75 @@ Util.setCssClass = function(element, cssClassName) {
   element.className = cssClassName;
 };
 
-Util.formatTimeSince = function(timeString) {
-    return timeString;
-}
-// /**
-//  * Formats a timestamp using numbers and words.
-//  * @param {string} timeString The timestamp as reported by gdata as a string.
-//  * @return {string} Formatted timestamp.
-//  */
 // Util.formatTimeSince = function(timeString) {
-//   if (!timeString) {
-//     return '';
-//   }
-//   var timeStringDate = new Date(timeString);
-//   var currentDate = new Date();
-//   var timeDiffSeconds = (currentDate.getTime() -
-//                          timeStringDate.getTime()) / 1000;
-//   var minutesAgo =  Math.floor(timeDiffSeconds / 60);
-//   var secondsAgo = timeDiffSeconds - minutesAgo * 60;
-//   var hoursAgo = Math.floor(minutesAgo / 60);
-//   var daysAgo = Math.floor(hoursAgo / 24);
-//   var weeksAgo = Math.floor(daysAgo / 7);
-//   var monthsAgo = Math.floor(daysAgo / 30);
-//   var yearsAgo = Math.floor(monthsAgo / 12);
-//   var amount = 0;
-//   var messageSingular = '';
-//   var messagePlural = '';
-//   var result = '';
+//     return timeString;
+// }
+/**
+ * Formats a timestamp using numbers and words.
+ * @param {string} timeString The timestamp as reported by gdata as a string.
+ * @return {string} Formatted timestamp.
+ */
+Util.formatTimeSince = function(timeString) {
+  if (!timeString) {
+    return '';
+  }
+  var timeStringDate = new Date(timeString);
+  var currentDate = new Date();
+  var timeDiffSeconds = (currentDate.getTime() -
+                         timeStringDate.getTime()) / 1000;
+  var minutesAgo =  Math.floor(timeDiffSeconds / 60);
+  var secondsAgo = timeDiffSeconds - minutesAgo * 60;
+  var hoursAgo = Math.floor(minutesAgo / 60);
+  var daysAgo = Math.floor(hoursAgo / 24);
+  var weeksAgo = Math.floor(daysAgo / 7);
+  var monthsAgo = Math.floor(daysAgo / 30);
+  var yearsAgo = Math.floor(monthsAgo / 12);
+  var amount = 0;
+  var messageSingular = '';
+  var messagePlural = '';
+  var result = '';
 
-//   if (yearsAgo) {
-//     amount = yearsAgo;
-//     messageSingular = chrome.i18n.getMessage('yearAgo');
-//     messagePlural = chrome.i18n.getMessage('yearsAgo', [amount]);
-//   } else if (monthsAgo) {
-//     amount = monthsAgo;
-//     messageSingular = chrome.i18n.getMessage('monthAgo');
-//     messagePlural = chrome.i18n.getMessage('monthsAgo', [amount]);
-//   } else if (weeksAgo) {
-//     amount = weeksAgo;
-//     messageSingular = chrome.i18n.getMessage('weekAgo');
-//     messagePlural = chrome.i18n.getMessage('weeksAgo', [amount]);
-//   } else if (daysAgo) {
-//     amount = daysAgo;
-//     messageSingular = chrome.i18n.getMessage('dayAgo');
-//     messagePlural = chrome.i18n.getMessage('daysAgo', [amount]);
-//   } else if (hoursAgo) {
-//     amount = hoursAgo;
-//     messageSingular = chrome.i18n.getMessage('hourAgo');
-//     messagePlural = chrome.i18n.getMessage('hoursAgo', [amount]);
-//   } else if (minutesAgo) {
-//     amount = minutesAgo;
-//     messageSingular = chrome.i18n.getMessage('minuteAgo');
-//     messagePlural = chrome.i18n.getMessage('minutesAgo', [amount]);
-//   } else if (secondsAgo) {
-//     amount = secondsAgo;
-//     messageSingular = chrome.i18n.getMessage('secondAgo');
-//     messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
-//   } else {
-//     amount = 1;
-//     messageSingular = chrome.i18n.getMessage('secondAgo');
-//     messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
-//   }
+  if (yearsAgo) {
+    amount = yearsAgo;
+    messageSingular = chrome.i18n.getMessage('yearAgo');
+    messagePlural = chrome.i18n.getMessage('yearsAgo', [amount]);
+  } else if (monthsAgo) {
+    amount = monthsAgo;
+    messageSingular = chrome.i18n.getMessage('monthAgo');
+    messagePlural = chrome.i18n.getMessage('monthsAgo', [amount]);
+  } else if (weeksAgo) {
+    amount = weeksAgo;
+    messageSingular = chrome.i18n.getMessage('weekAgo');
+    messagePlural = chrome.i18n.getMessage('weeksAgo', [amount]);
+  } else if (daysAgo) {
+    amount = daysAgo;
+    messageSingular = chrome.i18n.getMessage('dayAgo');
+    messagePlural = chrome.i18n.getMessage('daysAgo', [amount]);
+  } else if (hoursAgo) {
+    amount = hoursAgo;
+    messageSingular = chrome.i18n.getMessage('hourAgo');
+    messagePlural = chrome.i18n.getMessage('hoursAgo', [amount]);
+  } else if (minutesAgo) {
+    amount = minutesAgo;
+    messageSingular = chrome.i18n.getMessage('minuteAgo');
+    messagePlural = chrome.i18n.getMessage('minutesAgo', [amount]);
+  } else if (secondsAgo) {
+    amount = secondsAgo;
+    messageSingular = chrome.i18n.getMessage('secondAgo');
+    messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
+  } else {
+    amount = 1;
+    messageSingular = chrome.i18n.getMessage('secondAgo');
+    messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
+  }
 
-//   if (amount > 1) {
-//     result = messagePlural;
-//   } else {
-//     result = messageSingular;
-//   }
-//   return result;
-// };
+  if (amount > 1) {
+    result = messagePlural;
+  } else {
+    result = messageSingular;
+  }
+  return result;
+};
 
 
 GoogleDocs.prototype.openInTab = function(url) {

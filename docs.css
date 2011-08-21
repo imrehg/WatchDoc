@@ -45,7 +45,7 @@ div#feed {
 
 div#feed h2 {
   text-align: center;
-  min-width: 350px;
+  min-width: 250px;
 }
 
 div.feed-entry-template {
@@ -54,7 +54,7 @@ div.feed-entry-template {
 
 div.feed-entry {
   padding: 5px 0px 10px 0px;
-  width: 400px;
+  width: 300px;
 }
 
 span.feed-entry-remove {
