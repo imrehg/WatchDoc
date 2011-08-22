@@ -89,7 +89,7 @@ GoogleDocs.prototype.login = function() {
  */
 GoogleDocs.prototype.onAuthorized_ = function() {
   this.setVisualState();
-  // this.getTheFeed_();
+  this.getTheFeed_();
 };
 
 GoogleDocs.prototype.resetNumNewItems = function() {
