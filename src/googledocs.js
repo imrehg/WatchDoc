@@ -17,6 +17,7 @@ GoogleDocs = function(oauth) {
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
+  this.userEmail_ = localStorage['userEmail'] || '';
 };
 
 
@@ -88,6 +89,7 @@ GoogleDocs.prototype.login = function() {
  * Executed when a user has been authorized.
  */
 GoogleDocs.prototype.onAuthorized_ = function() {
+  this.getMetadata();
   this.setVisualState();
   this.getTheFeed_();
 };
@@ -128,10 +130,29 @@ GoogleDocs.prototype.initialize = function() {
   // chrome.tabs.onRemoved.addListener(Util.bind(this.onTabRemoved_, this));
 };
 
+GoogleDocs.prototype.getMetadata = function() {
+  if (this.oauth_.hasToken()) {
+      this.oauth_.sendSignedRequest('https://docs.google.com/feeds/metadata/default',
+				    function(text, xhr) {
+                                        var data = JSON.parse(text);
+					localStorage['userEmail'] = data['entry']['author'][0]['email']['$t'] || '';
+					this.userEmail_ = localStorage['userEmail'];
+				    }, {
+            'parameters' : {
+		'alt': 'json',
+		'v' : 3,
+		'inline': true,
+            }
+	}
+      );
+  }
+}
+
 /**
  * Starts polling for feed items.
  */
 GoogleDocs.prototype.startPolling = function() {
+  this.getMetadata();
   if (this.pollingIntervalId_) {
     window.clearInterval(this.pollingIntervalId_);
   }
@@ -201,9 +222,14 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
       // These items need default value because sometimes they are missing
       var lastViewed = feedItem['gd$lastViewed'] && feedItem['gd$lastViewed']['$t'] || "2000-01-01T00:00:00.000Z"
       var lastUpdated = feedItem['updated'] && feedItem['updated']['$t'] || "2000-01-01T00:00:00.000Z"
-      if (!this.feedMap_[itemId] &&
+      var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['email'] && feedItem['gd$lastModifiedBy']['email']['$t'] || 'unknown';
+
+      // Strict critera for display items: not "remove changes", not in store already, not on "not-show list", hasn't been viewed, not self-modified"
+      if (!feedItem['docs$removed'] &&
+	  !this.feedMap_[itemId] &&
 	  !localStorage['rm-' + itemId] &&
-	  (lastViewed < lastUpdated)) {
+	  (lastViewed < lastUpdated) &&
+	  (this.userEmail_ != modifiedBy)) {
         this.feedItems_.push(feedItem);
         this.feedMap_[itemId] = {
           'item': feedItem,
