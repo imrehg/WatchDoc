@@ -16,6 +16,7 @@ GoogleDocs = function(oauth) {
 
   };
   this.numNewItems_ = 0;
+  this.lastTimeStamp_ = 0;
 };
 
 
@@ -146,13 +147,14 @@ GoogleDocs.CHANGES_URL = 'https://docs.google.com/feeds/default/private/changes'
 
 GoogleDocs.prototype.getTheFeed_ = function() {
   if (this.oauth_.hasToken()) {
+      var nextTimeStamp = this.lastTimeStamp_ + 1;
       this.oauth_.sendSignedRequest(GoogleDocs.CHANGES_URL,
           Util.bind(this.onFeedReceived_, this) , {
             'parameters' : {
 		'alt': 'json',
 		'v' : 3,
 		'inline': true,
-		'start-index': 69000
+		'start-index': nextTimeStamp
             },
             // 'headers' : {
             //   'X-GData-Key': 'key=' + YouTube.YOUTUBE_API_KEY
@@ -205,9 +207,16 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
         };
         ++this.numNewItems_;
       }
+	this.lastTimeStamp_ = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || this.lastTimeStamp_;
     }
     this.sortItems_();
     this.setBadgeText_();
+
+    var largestChangestamp = data['feed']['docs$largestChangestamp'] && parseInt(data['feed']['docs$largestChangestamp']['value']) || 0;
+    // If haven't downloaded all changes yet, run the request again
+    if (this.lastTimeStamp_ < largestChangestamp) {
+       this.getTheFeed_();
+    }
   }
 
 }
