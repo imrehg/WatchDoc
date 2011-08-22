@@ -197,9 +197,13 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 	      delete this.feedMap_[itemId];
           }
       }
+
+      // These items need default value because sometimes they are missing
+      var lastViewed = feedItem['gd$lastViewed'] && feedItem['gd$lastViewed']['$t'] || "2000-01-01T00:00:00.000Z"
+      var lastUpdated = feedItem['updated'] && feedItem['updated']['$t'] || "2000-01-01T00:00:00.000Z"
       if (!this.feedMap_[itemId] &&
 	  !localStorage['rm-' + itemId] &&
-	  (feedItem['gd$lastViewed']['$t'] < feedItem['updated']['$t'])) {
+	  (lastViewed < lastUpdated)) {
         this.feedItems_.push(feedItem);
         this.feedMap_[itemId] = {
           'item': feedItem,
