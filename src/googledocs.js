@@ -369,7 +369,7 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
 
 
   Util.setAnchorHref(domFeedEntry, 'docs-entry-link', docUrl);
-  var modifiedBy = feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown';
+  var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown';
   Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', 'by ' + modifiedBy);
 
   // Util.setName(domFeedEntry, 'feed-entry-item-id', itemId);
