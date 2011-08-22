@@ -237,7 +237,6 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
   var div = document.createElement('div');
   var count = 0;
   if (!!this.feedItems_.length) {
-    var maxItemsToShow = this.options_['numFeedItemsShown'];
     for (var i = 0; i < this.feedItems_.length; ++i) {
 	// if (i == 0) {
 	//     alert(JSON.stringify(this.feedItems_[i]));
@@ -249,9 +248,6 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
           if (child) {
             div.appendChild(child);
             ++count;
-          }
-          if (count == maxItemsToShow) {
-            break;
           }
         }
       } catch (e) {
