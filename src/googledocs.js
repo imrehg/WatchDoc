@@ -17,7 +17,7 @@ GoogleDocs = function(oauth) {
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
-  this.userEmail_ = localStorage['userEmail'] || '';
+  this.userEmail_ = localStorage['userEmail'] || null;
 };
 
 
@@ -91,7 +91,6 @@ GoogleDocs.prototype.login = function() {
 GoogleDocs.prototype.onAuthorized_ = function() {
   this.getMetadata();
   this.setVisualState();
-  this.getTheFeed_();
 };
 
 GoogleDocs.prototype.resetNumNewItems = function() {
@@ -133,19 +132,26 @@ GoogleDocs.prototype.initialize = function() {
 GoogleDocs.prototype.getMetadata = function() {
   if (this.oauth_.hasToken()) {
       this.oauth_.sendSignedRequest('https://docs.google.com/feeds/metadata/default',
-				    function(text, xhr) {
-                                        var data = JSON.parse(text);
-					localStorage['userEmail'] = data['entry']['author'][0]['email']['$t'] || '';
-					this.userEmail_ = localStorage['userEmail'];
-				    }, {
-            'parameters' : {
-		'alt': 'json',
-		'v' : 3,
-		'inline': true,
-            }
-	}
-      );
-  }
+				    Util.bind(this.receivedMetadata, this),
+				    { 'parameters' : {
+                                         'alt': 'json',
+                                         'v' : 3,
+                                         'inline': true,
+                                         }
+                                     });
+   }
+}
+
+GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
+  var data = JSON.parse(text);
+  var email = data['entry']['author'][0]['email']['$t'] || '';
+  this.setUserEmail(email);
+  this.getTheFeed_();
+}
+
+GoogleDocs.prototype.setUserEmail = function(email) {
+  localStorage['userEmail'] = email;
+  this.userEmail_ = localStorage['userEmail'];
 }
 
 /**
@@ -167,7 +173,7 @@ GoogleDocs.META_URL = 'https://docs.google.com/feeds/default/private/full';
 GoogleDocs.CHANGES_URL = 'https://docs.google.com/feeds/default/private/changes';
 
 GoogleDocs.prototype.getTheFeed_ = function() {
-  if (this.oauth_.hasToken()) {
+  if (this.oauth_.hasToken() && this.userEmail_) {
       var nextTimeStamp = this.lastTimeStamp_ + 1;
       this.oauth_.sendSignedRequest(GoogleDocs.CHANGES_URL,
           Util.bind(this.onFeedReceived_, this) , {
