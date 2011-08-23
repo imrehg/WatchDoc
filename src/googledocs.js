@@ -103,8 +103,21 @@ GoogleDocs.prototype.resetNumNewItems = function() {
  */
 GoogleDocs.prototype.logout = function() {
   this.oauth_.clearTokens();
+  this.clearData();
   this.setVisualState();
 };
+
+/**
+ * Clears out the data related to a user so a new login can start fresh
+ */
+GoogleDocs.prototype.clearData = function() {
+  this.feedItems_ = [];
+  this.feedMap_ = {};
+  this.numNewItems_ = 0;
+  this.lastTimeStamp_ = 0;
+  this.userEmail_ = null;
+  localStorage.clear();
+}
 
 /**
  * @return {bool} Whether the user is logged in.
