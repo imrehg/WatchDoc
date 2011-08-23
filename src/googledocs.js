@@ -1,4 +1,7 @@
 /**
+ * License: see https://github.com/imrehg/WatchDoc/blob/master/README.md
+ */
+/**
  * Original YouTube Feed Chrome extension license:
  *
  * Copyright 2010 Google Inc.
