@@ -68,45 +68,7 @@
               gdocs.openInTab(e.currentTarget.href);
             });
           }
-
-        <!--   var feedEntryUsers = document.getElementsByClassName('feed-entry-user'); -->
-        <!--   var videoAuthors = document.getElementsByClassName('feed-entry-video-from-username'); -->
-        <!--   var videos = document.getElementsByClassName('feed-entry-video-thumb'); -->
-        <!--   var videoTitles = document.getElementsByClassName('feed-entry-video-long-title-anchor'); -->
-        <!--   var removeIcons = document.getElementsByClassName('feed-entry-remove'); -->
-
-        <!--   for (var i = 0; i < feedEntryUsers.length; ++i) { -->
-        <!--     feedEntryUsers[i].addEventListener('mousedown', function(e) { -->
-        <!--       youtube.openInTab(e.currentTarget.href); -->
-        <!--     }); -->
-        <!--   } -->
-
-        <!--   for (var i = 0; i < videoAuthors.length; ++i) { -->
-        <!--     videoAuthors[i].addEventListener('mousedown', function(e) { -->
-        <!--       youtube.openInTab(e.currentTarget.href); -->
-        <!--     }); -->
-        <!--   } -->
-        <!--   for (var i = 0; i < videos.length; ++i) { -->
-        <!--     videos[i].addEventListener('mousedown', function(e) { -->
-        <!--       youtube.openInTab(e.currentTarget.href); -->
-        <!--     }); -->
-        <!--   } -->
-        <!--   for (var i = 0; i < videoTitles.length; ++i) { -->
-        <!--     videoTitles[i].addEventListener('mousedown', function(e) { -->
-        <!--       youtube.openInTab(e.currentTarget.href); -->
-        <!--     }); -->
-        <!--   } -->
-        <!--   for (var i = 0; i < removeIcons.length; ++i) { -->
-        <!--     removeIcons[i].addEventListener('mousedown', function(e) { -->
-        <!--       var entry = e.currentTarget.parentNode; -->
-        <!--       var itemId = Util.getFirstElementByClass(entry, 'feed-entry-item-id'); -->
-        <!--       youtube.removeFeedEntry(itemId.name); -->
-        <!--       entry.parentNode.removeChild(entry); -->
-        <!--     }); -->
-        <!--   } -->
         } else {
-
-
           loginButton.innerHTML = chrome.i18n.getMessage('buttonLogin');
           loginButton.style.display = '';
 
@@ -126,7 +88,6 @@
   </head>
   <body onload='initialize()'>
     <div class="feed-entry-template">
-      <span class="feed-entry-remove"></span>
       <a class="feed-entry-item-id"></a>
       <div class="feed-entry-title">
         <img class="feed-entry-action-icon" src="img/pixel.gif">

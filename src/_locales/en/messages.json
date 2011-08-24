@@ -11,10 +11,6 @@
     "message": "WatchDoc",
     "description": "Extension title"
   },
-
-
-
-
   "messageNoFeedItems": {
     "message": "There are no feed items.",
     "description": "Message when there are no feed items."
@@ -46,104 +42,6 @@
   "titleWhichFeedTypes": {
     "message": "Feed types to show in the Feed:",
     "description": "The title for the section for feed type selection."
-  },
-  "label_video_uploaded": {
-    "message": "Uploaded Videos",
-    "description": "The label for the checkbox for uploaded videos."
-  },
-  "label_video_favorited": {
-    "message": "Favorited Videos",
-    "description": "The label for the checkbox for favorited videos."
-  },
-  "label_video_rated": {
-    "message": "Rated Videos",
-    "description": "The label for the checkbox for rated videos."
-  },
-  "label_video_liked": {
-    "message": "Liked Videos",
-    "description": "The label for the checkbox for liked videos."
-  },
-  "label_video_commented": {
-    "message": "Commented Videos",
-    "description": "The label for the checkbox for commented videos."
-  },
-  "label_load_friend_feed": {
-    "message": "Videos from Friends",
-    "description": "The label for the checkbox for whether to load videos from friends."
-  },
-  "label_load_subscription_feed": {
-    "message": "Videos from Subscriptions",
-    "description": "The label for the checkbox for whether to load videos from subscriptions."
-  },
-  "eventType_video_uploaded": {
-    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> uploaded a video.",
-    "description": "The entry title when a user uploads a new video.",
-    "placeholders": {
-      "url": {
-         "content": "$1",
-         "example": "http://www.youtube.com/user/slavegoogle"
-      },
-      "username": {
-         "content": "$2",
-         "example": "slavegoogle"
-      }
-    }
-  },
-  "eventType_video_favorited": {
-    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> favorited a video.",
-    "description": "The entry title when a user favorites a video.",
-    "placeholders": {
-      "url": {
-         "content": "$1",
-         "example": "http://www.youtube.com/user/slavegoogle"
-      },
-      "username": {
-         "content": "$2",
-         "example": "slavegoogle"
-      }
-    }
-  },
-  "eventType_video_rated": {
-    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> rated a video.",
-    "description": "The entry title when a user rates a video.",
-    "placeholders": {
-      "url": {
-         "content": "$1",
-         "example": "http://www.youtube.com/user/slavegoogle"
-      },
-      "username": {
-         "content": "$2",
-         "example": "slavegoogle"
-      }
-    }
-  },
-  "eventType_video_liked": {
-    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> liked a video.",
-    "description": "The entry title when a user likes a video.",
-    "placeholders": {
-      "url": {
-         "content": "$1",
-         "example": "http://www.youtube.com/user/slavegoogle"
-      },
-      "username": {
-         "content": "$2",
-         "example": "slavegoogle"
-      }
-    }
-  },
-  "eventType_video_commented": {
-    "message": "<a href='$url$' class='feed-entry-user'>$username$</a> commented on a video.",
-    "description": "The entry title when a user comments on a video.",
-    "placeholders": {
-      "url": {
-         "content": "$1",
-         "example": "http://www.youtube.com/user/slavegoogle"
-      },
-      "username": {
-         "content": "$2",
-         "example": "slavegoogle"
-      }
-    }
   },
   "yearAgo": {
     "message": "1 year ago",

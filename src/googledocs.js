@@ -22,6 +22,11 @@
  *
  */
 
+
+/**
+ * Constructor for a GoogleDocs object.
+ * @param {ChromeExOAuth} oauth The authentication object.
+ */
 GoogleDocs = function(oauth) {
   this.oauth_ = oauth;
   this.feedItems_ = [];
@@ -45,26 +50,18 @@ GoogleDocs = function(oauth) {
 };
 
 
+/**
+ * The number of new items in the feed since user last checked the list of items
+ * @type {number}
+ */
 GoogleDocs.prototype.numNewItems_;
+
 
 /**
  * The polling interval for feed items in minutes.
  * @type {number}
  */
-GoogleDocs.DEFAULT_POLLING_INTERVAL = 1;  // 5 minutes.
-
-/**
- * The default number of feed items to be retrieved.
- * @type {number}
- */
-GoogleDocs.DEFAULT_NUM_FEED_ITEMS = 10;
-
-
-/**
- * The default number of feed items to be shown.
- * @type {number}
- */
-GoogleDocs.DEFAULT_NUM_FEED_ITEMS_SHOWN = 20;
+GoogleDocs.DEFAULT_POLLING_INTERVAL = 1;  // 1 minutes.
 
 
 /**
@@ -73,17 +70,20 @@ GoogleDocs.DEFAULT_NUM_FEED_ITEMS_SHOWN = 20;
  */
 GoogleDocs.prototype.oauth_;
 
+
 /**
  * Personalized user configs.
  * @type {Object}
  */
 GoogleDocs.prototype.options_;
 
+
 /**
  * The id of the interval used for polling.
  * @type {number}
  */
 GoogleDocs.prototype.pollingIntervalId_;
+
 
 /**
  * @return {Object} The configuration options.
@@ -92,6 +92,11 @@ GoogleDocs.prototype.getOptions = function() {
   return this.options_;
 };
 
+
+/**
+ * Supported document types.
+ * @type {Array.<String>}
+ */
 GoogleDocs.SUPPORTED_DOC_TYPES = [
     'document',
     'presentation',
@@ -102,12 +107,28 @@ GoogleDocs.SUPPORTED_DOC_TYPES = [
     'pdf'
 ];
 
+
+/**
+ * Metadata feed URL
+ * @type {String}
+ */
+GoogleDocs.METADATA_URL = 'https://docs.google.com/feeds/metadata/default';
+
+
+/**
+ * Document changes feed URL
+ * @type {String}
+ */
+GoogleDocs.CHANGES_URL = 'https://docs.google.com/feeds/default/private/changes';
+
+
 /**
  * Logs in the user.
  */
 GoogleDocs.prototype.login = function() {
   this.oauth_.authorize(Util.bind(this.onAuthorized_, this));
 };
+
 
 /**
  * Executed when a user has been authorized.
@@ -117,10 +138,15 @@ GoogleDocs.prototype.onAuthorized_ = function() {
   this.setVisualState();
 };
 
+
+/**
+ * Reset the new item counter
+ */
 GoogleDocs.prototype.resetNumNewItems = function() {
   this.numNewItems_ = 0;
   this.setVisualState();
 };
+
 
 /**
  * Logs out the user.
@@ -130,6 +156,7 @@ GoogleDocs.prototype.logout = function() {
   this.clearData();
   this.setVisualState();
 };
+
 
 /**
  * Clears out the data related to a user so a new login can start fresh
@@ -143,12 +170,14 @@ GoogleDocs.prototype.clearData = function() {
   localStorage.clear();
 }
 
+
 /**
  * @return {bool} Whether the user is logged in.
  */
 GoogleDocs.prototype.isLoggedIn = function() {
   return this.oauth_.hasToken();
 };
+
 
 /**
  * Sets the objects visual state.
@@ -158,6 +187,7 @@ GoogleDocs.prototype.setVisualState = function() {
   this.setBadgeText_();
 };
 
+
 /**
  * Initializes a GoogleDocs object.
  */
@@ -166,19 +196,29 @@ GoogleDocs.prototype.initialize = function() {
   // chrome.tabs.onRemoved.addListener(Util.bind(this.onTabRemoved_, this));
 };
 
+
+/**
+ * Get metadata feed
+ */
 GoogleDocs.prototype.getMetadata = function() {
   if (this.oauth_.hasToken()) {
-      this.oauth_.sendSignedRequest('https://docs.google.com/feeds/metadata/default',
+      this.oauth_.sendSignedRequest(GoogleDocs.METADATA_URL,
 				    Util.bind(this.receivedMetadata, this),
 				    { 'parameters' : {
                                          'alt': 'json',
                                          'v' : 3,
-                                         'inline': true,
+                                         'inline': true
                                          }
                                      });
    }
 }
 
+
+/**
+ * Executed when the metadata feed is received
+ * @param {string} text The parsed text from the xhr.
+ * @param {XmlHttpRequest} xhr The XmlHttpRequest that finished executing.
+ */
 GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
   var data = JSON.parse(text);
   var email = data['entry']['author'][0]['email']['$t'] || '';
@@ -186,10 +226,16 @@ GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
   this.getTheFeed_();
 }
 
+
+/**
+ * Set the user's email information
+ * @param {string} email The user's email to set.
+ */
 GoogleDocs.prototype.setUserEmail = function(email) {
   localStorage['userEmail'] = email;
   this.userEmail_ = localStorage['userEmail'];
 }
+
 
 /**
  * Starts polling for feed items.
@@ -205,10 +251,6 @@ GoogleDocs.prototype.startPolling = function() {
       this.options_['pollingInterval'] * 60000);
 };
 
-GoogleDocs.META_URL = 'https://docs.google.com/feeds/default/private/full';
-
-GoogleDocs.CHANGES_URL = 'https://docs.google.com/feeds/default/private/changes';
-
 GoogleDocs.prototype.getTheFeed_ = function() {
   if (this.oauth_.hasToken() && this.userEmail_) {
       var nextTimeStamp = this.lastTimeStamp_ + 1;
@@ -219,10 +261,7 @@ GoogleDocs.prototype.getTheFeed_ = function() {
 		'v' : 3,
 		'inline': true,
 		'start-index': nextTimeStamp
-            },
-            // 'headers' : {
-            //   'X-GData-Key': 'key=' + YouTube.YOUTUBE_API_KEY
-            // }
+            }
 	  });
   }
 }
@@ -245,11 +284,9 @@ GoogleDocs.prototype.sortFunction_ = function(a, b) {
 
 GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) { 
   var data = JSON.parse(text);
-    console.log(text);
-  // alert(text);
+  console.log(text);
 
   if (data && data['feed'] && data['feed']['entry']) {
-    // this.numNewItems_ = 0;
     var feedItems = data['feed']['entry'];
     for (var i = 0; i < feedItems.length; ++i) {
       var feedItem = feedItems[i];
@@ -340,51 +377,12 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
 
 
 GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
-  // // Grab the metadata from the feed item.
   var itemId = feedItem['id']['$t'];
-  // var videoId = feedItem['yt$videoid']['$t'];
-  // var username = feedItem['author'][0]['name']['$t'];
-  // var eventType = this.getEventType_(feedItem);
-  // if (!eventType) {
-  //   return null;
-  // }
-
   var feedEntryTimestamp = feedItem['updated']['$t'];
-  // var videoInfo = null;
-  // var links = feedItem['link'];
-  // for (var i = 0; i < links.length; ++i) {
-  //   if (links[i].rel == YouTube.VIDEO_REL) {
-  //     videoInfo = links[i]['entry'][0];
-  //   }
-  // }
-  // var videoTitle = videoInfo && videoInfo['title'] && videoInfo['title']['$t'];
-  // var videoTime = videoInfo && 
-  //                 videoInfo['media$group'] &&
-  //                 videoInfo['media$group']['yt$duration'] &&
-  //                 videoInfo['media$group']['yt$duration']['seconds'];
-  // var videoDescription = videoInfo &&
-  //                        videoInfo['media$group'] &&
-  //                        videoInfo['media$group']['media$description'] &&
-  //                        videoInfo['media$group']['media$description']['$t'];
-  // var videoAddedTime = videoInfo &&
-  //                      videoInfo['published'] &&
-  //                      videoInfo['published']['$t'];
-  // var videoViewCount = videoInfo &&
-  //                      videoInfo['yt$statistics'] &&
-  //                      videoInfo['yt$statistics']['viewCount'];
-  // var videoAuthorUsername = videoInfo &&
-  //                           videoInfo['author'] &&
-  //                           videoInfo['author'][0] &&
-  //                           videoInfo['author'][0]['name'] &&
-  //                           videoInfo['author'][0]['name']['$t'];
 
-  // // Prepare the content for the basic DOM for the feed entry.
-  // var userChannelUrl = Util.channelUrl(username);
-  // var feedEntryTitle = chrome.i18n.getMessage('eventType_' + eventType,
-  //                                             [userChannelUrl, username]);
+  var feedEntryTitle = feedItem['title']['$t'];
 
-    var feedEntryTitle = feedItem['title']['$t'];
-  // // Build the basic DOM for the feed entry from the template.
+  // Build the basic DOM for the feed entry from the template.
   var domFeedEntry = template.cloneNode(true);
 
   Util.setChildHTML(domFeedEntry, 'feed-entry-title-text', feedEntryTitle);
@@ -419,41 +417,6 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown';
   Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', 'by ' + modifiedBy);
 
-  // Util.setName(domFeedEntry, 'feed-entry-item-id', itemId);
-
-  // if (videoInfo) {
-  //   // Prepare the content for the video info for the feed entry.
-  //   var videoUrl = Util.videoWatchUrl(videoId);
-  //   var videoAuthorChannelUrl = Util.channelUrl(videoAuthorUsername);
-  //   var videoThumbnailSrc = Util.thumbnailUrl(videoId);
-  //   var formattedViewCount = Util.formatViewCount(videoViewCount);
-  //   var viewCountText = chrome.i18n.getMessage('viewCount',
-  //                                              [formattedViewCount]);
-
-  //   // Build the video info DOM for the feed entry from the template.
-  //   Util.setImageSrc(domFeedEntry, 'feed-entry-video-img', videoThumbnailSrc);
-  //   Util.setAnchorHref(domFeedEntry, 'feed-entry-video-thumb', videoUrl);
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-time',
-  //                     Util.formatVideoLength(videoTime));
-  //   Util.setAnchorHref(domFeedEntry, 'feed-entry-video-long-title-anchor',
-  //                      videoUrl);
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-long-title-anchor',
-  //                     videoTitle);
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-description',
-  //                     videoDescription);
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-added-time',
-  //                     Util.formatTimeSince(videoAddedTime));
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-num-views',
-  //                     viewCountText);
-  //   Util.setAnchorHref(domFeedEntry, 'feed-entry-video-from-username',
-  //                      videoAuthorChannelUrl);
-  //   Util.setChildHTML(domFeedEntry, 'feed-entry-video-from-username',
-  //                     videoAuthorUsername);
-  //   var videoInfoElement = Util.getFirstElementByClass(
-  //       domFeedEntry,
-  //       'feed-entry-video-cell-template');
-  //   Util.setCssClass(videoInfoElement, 'feed-entry-video-cell');
-  // }
   Util.setCssClass(domFeedEntry, 'feed-entry');
   return domFeedEntry;
 };
@@ -462,17 +425,6 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
 GoogleDocs.prototype.setBadgeText_ = function() {
   if (this.oauth_.hasToken()) {
     var count = this.numNewItems_;
-    // if (!this.countNewVideosOnly_()) {
-    //   // Count everything we have. Old-style.
-    //   count = 0;
-    //   for (var i = 0; i < this.feedItems_.length; ++i) {
-    //     if (this.shouldShowFeedItem_(this.feedItems_[i], this.options_)) {
-    //       ++count;
-    //     }
-    //   }
-    //   // No point in showing a count larger than the number of videos we show.
-    //   count = Math.min(count, this.options_['numFeedItemsShown']);
-    // }
     var displayedCount = count || '';
     chrome.browserAction.setBadgeText({'text': '' + displayedCount});
   } else {
@@ -555,9 +507,7 @@ Util.setCssClass = function(element, cssClassName) {
   element.className = cssClassName;
 };
 
-// Util.formatTimeSince = function(timeString) {
-//     return timeString;
-// }
+
 /**
  * Formats a timestamp using numbers and words.
  * @param {string} timeString The timestamp as reported by gdata as a string.
