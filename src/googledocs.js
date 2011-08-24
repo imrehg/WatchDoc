@@ -557,14 +557,10 @@ Util.formatTimeSince = function(timeString) {
     amount = minutesAgo;
     messageSingular = chrome.i18n.getMessage('minuteAgo');
     messagePlural = chrome.i18n.getMessage('minutesAgo', [amount]);
-  } else if (secondsAgo) {
-    amount = secondsAgo;
-    messageSingular = chrome.i18n.getMessage('secondAgo');
-    messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
   } else {
-    amount = 1;
-    messageSingular = chrome.i18n.getMessage('secondAgo');
-    messagePlural = chrome.i18n.getMessage('secondsAgo', [amount]);
+      amount = 1;
+      messageSingular = chrome.i18n.getMessage('justNow');
+      messagePlural = chrome.i18n.getMessage('justNow');
   }
 
   if (amount > 1) {

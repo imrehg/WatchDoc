@@ -71,6 +71,10 @@
     "message": "1 second ago",
     "description": "Timestamp singular - 1 second since an event."
   },
+  "justNow": {
+    "message": "just now",
+    "description": "Timestamp singular - very short time since an event."
+  },
   "yearsAgo": {
     "message": "$count$ years ago",
     "description": "Timestamp plural - years since an event.",
