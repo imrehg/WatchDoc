@@ -254,18 +254,22 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     for (var i = 0; i < feedItems.length; ++i) {
       var feedItem = feedItems[i];
       var itemId = feedItem['id'] && feedItem['id']['$t'];
+
+      // These items need default value because sometimes they are missing
+      var lastViewed = feedItem['gd$lastViewed'] && feedItem['gd$lastViewed']['$t'] || "2000-01-01T00:00:00.000Z";
+      var lastUpdated = feedItem['updated'] && feedItem['updated']['$t'] || "2000-01-01T00:00:00.000Z";
+      var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['email'] && feedItem['gd$lastModifiedBy']['email']['$t'] || 'unknown';
+
       if (this.feedMap_[itemId]) {
-          if (this.feedMap_[itemId]['item']['updated']['$t'] < feedItem['updated']['$t']) {
+	  var oldUpdated = this.feedMap_[itemId]['item']['updated'] && this.feedMap_[itemId]['item']['updated']['$t'] || "2000-01-01T00:00:00.000Z";
+	  // Remove document from the list if: 1) it's been updated and later we want to add new version to list, 2) has been viewed by user
+          if ((oldUpdated < lastUpdated) ||
+              (oldUpdated < lastViewed)) {
               // remove old version and add new one!
               this.feedItems_.splice(this.feedItems_.indexOf(this.feedMap_[itemId]['item']), 1);
 	      delete this.feedMap_[itemId];
           }
       }
-
-      // These items need default value because sometimes they are missing
-      var lastViewed = feedItem['gd$lastViewed'] && feedItem['gd$lastViewed']['$t'] || "2000-01-01T00:00:00.000Z"
-      var lastUpdated = feedItem['updated'] && feedItem['updated']['$t'] || "2000-01-01T00:00:00.000Z"
-      var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['email'] && feedItem['gd$lastModifiedBy']['email']['$t'] || 'unknown';
 
       // Strict critera for display items: not "remove changes", not in store already, not on "not-show list", hasn't been viewed, not self-modified"
       if (!feedItem['docs$removed'] &&
