@@ -12,11 +12,11 @@
     "description": "Extension title"
   },
   "messageNoFeedItems": {
-    "message": "There are no feed items.",
+    "message": "There are no unseen changes to your documents.",
     "description": "Message when there are no feed items."
   },
   "messageNeedLogIn": {
-    "message": "You need to login to see your Feed.",
+    "message": "You need to login to see your documents.",
     "description": "The subtitle when the user is not logged in."
   },
   "messageSavedOptions": {
