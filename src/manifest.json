@@ -13,6 +13,7 @@
     "default_title": "__MSG_extTitle__",
     "popup": "docs.html"
   },
+  "options_page": "options.html",
   "permissions": [
     "tabs",
     "https://docs.google.com/feeds/*",
