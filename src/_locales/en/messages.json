@@ -11,6 +11,10 @@
     "message": "WatchDoc",
     "description": "Extension title"
   },
+  "optionPageTitle": {
+    "message": "WatchDoc settings",
+    "description": "The title of the options page"
+  },
   "messageNoFeedItems": {
     "message": "There are no unseen changes to your documents.",
     "description": "Message when there are no feed items."
@@ -18,10 +22,6 @@
   "messageNeedLogIn": {
     "message": "You need to login to see your documents.",
     "description": "The subtitle when the user is not logged in."
-  },
-  "messageSavedOptions": {
-    "message": "Successfully saved your settings.",
-    "description": "The message displayed after the user saves the settings."
   },
   "buttonLogin": {
     "message": "Login",
@@ -32,16 +32,8 @@
     "description": "The text for the logout button."
   },
   "buttonSave": {
-    "message": "Save",
+    "message": "Save settings",
     "description": "The text for the save button."
-  },
-  "titleWhichEventTypes": {
-    "message": "Event types to show in the Feed:",
-    "description": "The title for the section for event type selection."
-  },
-  "titleWhichFeedTypes": {
-    "message": "Feed types to show in the Feed:",
-    "description": "The title for the section for feed type selection."
   },
   "yearAgo": {
     "message": "1 year ago",
@@ -204,5 +196,49 @@
         "example": "60"
       }
     }
+  },
+  "messageSavedOptions": {
+    "message": "Successfully saved your settings.",
+    "description": "The message displayed after the user saves the settings."
+  },
+  "titleWhichDocumentTypes": {
+    "message": "Which document types to show:",
+    "description": "The title for the section for document type selection."
+  },
+  "label_docs_generic": {
+    "message": "Generic documents",
+    "description": "The label for the checkbox for generic documents."
+  },
+  "label_docs_document": {
+    "message": "Text documents",
+    "description": "The label for the checkbox for text documents."
+  },
+  "label_docs_presentation": {
+    "message": "Presentations",
+    "description": "The label for the checkbox for presentations."
+  },
+  "label_docs_spreadsheet": {
+    "message": "Spreadsheets",
+    "description": "The label for the checkbox for spreadsheets."
+  },
+  "label_docs_form": {
+    "message": "Forms",
+    "description": "The label for the checkbox for forms."
+  },
+  "label_docs_drawing": {
+    "message": "Drawings",
+    "description": "The label for the checkbox for drawings."
+  },
+  "label_docs_collection": {
+    "message": "Collections",
+    "description": "The label for the checkbox for collections."
+  },
+  "label_docs_pdf": {
+    "message": "PDF documents",
+    "description": "The label for the checkbox for PDF documents."
+  },
+  "label_docs_image": {
+    "message": "Images",
+    "description": "The label for the checkbox for images."
   }
 }

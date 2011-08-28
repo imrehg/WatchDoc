@@ -41,12 +41,50 @@ GoogleDocs = function(oauth) {
                     GoogleDocs.DEFAULT_NUM_FEED_ITEMS,
     'numFeedItemsShown': localStorage['numFeedItemsShown'] &&
                          parseInt(localStorage['numFeedItemsShown']) ||
-                         GoogleDocs.DEFAULT_NUM_FEED_ITEMS_SHOWN
-
+                         GoogleDocs.DEFAULT_NUM_FEED_ITEMS_SHOWN,
+    'docs_generic' :  localStorage['docs_generic'] === undefined ||
+                      localStorage['docs_generic'] === 'true' ||
+                      false,
+    'docs_document' :  localStorage['docs_document'] === undefined ||
+                       localStorage['docs_document'] === 'true' ||
+                       false,
+    'docs_presentation' :  localStorage['docs_presentation'] === undefined ||
+                           localStorage['docs_presentation'] === 'true' ||
+                           false,
+    'docs_spreadsheet' :  localStorage['docs_spreadsheet'] === undefined ||
+                          localStorage['docs_spreadsheet'] === 'true' ||
+                          false,
+    'docs_drawing' :  localStorage['docs_drawing'] === undefined ||
+                      localStorage['docs_drawing'] === 'true' ||
+                      false,
+    'docs_form' :  localStorage['docs_form'] === undefined ||
+                   localStorage['docs_form'] === 'true' ||
+                   false,
+    'docs_collection' :  localStorage['docs_collection'] === undefined ||
+                         localStorage['docs_collection'] === 'true' ||
+                         false,
+    'docs_pdf' :  localStorage['docs_pdf'] === undefined ||
+                  localStorage['docs_pdf'] === 'true' ||
+                  false,
+    'docs_image' :  localStorage['docs_image'] === undefined ||
+                   localStorage['docs_image'] === 'true' ||
+                   false
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
   this.userEmail_ = localStorage['userEmail'] || null;
+};
+
+
+/**
+ * Saves the specified options in local storage.
+ * @param {Object} options The key/value pairs of options.
+ */
+GoogleDocs.prototype.saveOptions = function(options) {
+  for (var option in options) {
+    this.options_[option] = options[option];
+    localStorage[option] = options[option];
+  }
 };
 
 
@@ -321,7 +359,9 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
           'item': feedItem,
           'removed': false
         };
-        ++this.numNewItems_;
+        if (this.shouldShowFeedItem_(feedItem, this.options_)) {
+          ++this.numNewItems_;
+        }
       }
 	this.lastTimeStamp_ = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || this.lastTimeStamp_;
     }
@@ -337,9 +377,18 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 
 }
 
+
+/**
+ * Our logic to select which feed items to show, based on settings
+ * @param {Object} feedItem The feed item to check
+ * @param {Object} prefs The Current settings
+ * @return {boolean} The decision whether to show that item or not
+ */
 GoogleDocs.prototype.shouldShowFeedItem_ = function(feedItem, prefs) {
-    return true;
+    var docType = this.extractDocType(feedItem);
+    return prefs['docs_'+docType];
 };
+
 
 /**
  * @param {Element} feedEntryTemplate The feed entry template.
@@ -378,6 +427,30 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
 };
 
 
+/**
+ * Get document type from the feed item, including our own logic processing of the types
+ * @param {Object} feedItem The feed item;
+ * @return {string} The document type string
+ */
+GoogleDocs.prototype.extractDocType = function(feedItem) {
+  var docType = '';
+  for (var i = 0; i < feedItem['category'].length; ++i) {
+      if (feedItem['category'][i]['scheme'] == "http://schemas.google.com/g/2005#kind") {
+	  docType = feedItem['category'][i]['label'];
+	  // Image docType attaches file type like 'image/png', 'image/jpg', remove that
+	  if (docType.match(/image/) != null) {
+	      docType = 'image';
+	  }
+	  break;
+      }
+  }
+  if (GoogleDocs.SUPPORTED_DOC_TYPES.indexOf(docType) == -1) {
+      docType = 'generic';
+  }
+  return docType;
+}
+
+
 GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   var itemId = feedItem['id']['$t'];
   var feedEntryTimestamp = feedItem['updated']['$t'];
@@ -401,20 +474,7 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   // Setup icon
   var actionIcon = Util.getFirstElementByClass(domFeedEntry,
                                                'feed-entry-action-icon');
-  var docType = '';
-  for (var i = 0; i < feedItem['category'].length; ++i) {
-      if (feedItem['category'][i]['scheme'] == "http://schemas.google.com/g/2005#kind") {
-	  docType = feedItem['category'][i]['label'];
-	  // Image docType attaches file type like 'image/png', 'image/jpg', remove that
-	  if (docType.match(/image/) != null) {
-	      docType = 'image';
-	  }
-	  break;
-      }
-  }
-  if (GoogleDocs.SUPPORTED_DOC_TYPES.indexOf(docType) == -1) {
-      docType = 'generic';
-  }
+  var docType = this.extractDocType(feedItem);
   Util.setCssClass(actionIcon,
                    'feed-entry-action-icon message-sprite ' + docType);
 

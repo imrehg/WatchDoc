@@ -39,7 +39,7 @@ div.main {
   border-width: 5px;
 }
 
-div.optionDiv, div.eventTypeDiv, div.feedTypeDiv {
+div.optionDiv, div.docTypeDiv {
   margin: 10px 0px;
 }
 
@@ -65,11 +65,11 @@ label.optionLabel {
   background-color: #FFE5E5;
 }
 
-#event_types, #feed_types {
+#document_types {
   margin: 20px 0px;
 }
 
-#event_types div, #feed_types div {
+#document_types div {
   margin-left: 20px;'
 }
 

@@ -25,101 +25,27 @@
 
 <html>
   <head>
+    <title id="options_page_title"></title>
     <link rel="stylesheet" type="text/css" href="options.css" />
-    <script type="text/javascript" src="google.js"></script>
+    <script type="text/javascript" src="googledocs.js"></script>
     <script type="text/javascript">
 
       function initialize() {
         var gdocs = chrome.extension.getBackgroundPage().gdocs;
         var options = gdocs.getOptions();
 
-        // Polling Interval
-        var optionPollingInterval = document.getElementById('option_polling_interval');
-        var labelPollingInterval = Util.getFirstElementByClass(optionPollingInterval, 'optionLabel');
-        labelPollingInterval.innerHTML = chrome.i18n.getMessage('labelPollingInterval');
-        var selectPollingInterval = Util.getFirstElementByClass(optionPollingInterval, 'optionSelect');
-        for (var i = YouTube.MIN_POLLING_INTERVAL; i <= YouTube.MAX_POLLING_INTERVAL; ++i) {
-          var option = document.createElement('option');
-          option.value = i;
-          option.text = i;
-          selectPollingInterval.appendChild(option);
-        }
-        selectPollingInterval.value = options['pollingInterval'];
-        var labelMetricPollingInterval = Util.getFirstElementByClass(optionPollingInterval, 'optionLabelMetric');
-        labelMetricPollingInterval.innerHTML = chrome.i18n.getMessage('labelMinutes');
+        var pageTitle = document.getElementById('options_page_title');
+        pageTitle.innerHTML = chrome.i18n.getMessage('optionPageTitle');
 
-        // Number of feed items retrieved.
-        var optionNumFeedItems = document.getElementById('option_num_feed_items');
-        var labelNumFeedItems = Util.getFirstElementByClass(optionNumFeedItems, 'optionLabel');
-        labelNumFeedItems.innerHTML = chrome.i18n.getMessage('labelNumFeedItems');
-        var selectNumFeedItems = Util.getFirstElementByClass(optionNumFeedItems, 'optionSelect');
-        for (var i = 1; i <= YouTube.MAX_NUM_FEED_ITEMS; ++i) {
-          var option = document.createElement('option');
-          option.value = i;
-          option.text = i;
-          selectNumFeedItems.appendChild(option);
-        }
-        selectNumFeedItems.value = options['numFeedItems'];
-
-        // Number of feed items shown.
-        var optionNumFeedItemsShown = document.getElementById('option_num_feed_items_shown');
-        var labelNumFeedItemsShown = Util.getFirstElementByClass(optionNumFeedItemsShown, 'optionLabel');
-        labelNumFeedItemsShown.innerHTML = chrome.i18n.getMessage('labelNumFeedItemsShown');
-        var selectNumFeedItemsShown = Util.getFirstElementByClass(optionNumFeedItemsShown, 'optionSelect');
-        for (var i = 1; i <= YouTube.MAX_NUM_FEED_ITEMS_SHOWN; ++i) {
-          var option = document.createElement('option');
-          option.value = i;
-          option.text = i;
-          selectNumFeedItemsShown.appendChild(option);
-        }
-        selectNumFeedItemsShown.value = options['numFeedItemsShown'];
-
-        // What does the unread count represent. New items or total unread items?
-        var optionUnreadCount = document.getElementById('option_unread_count');
-        var labelUnreadCount = Util.getFirstElementByClass(optionUnreadCount, 'optionLabel');
-        labelUnreadCount.innerHTML = chrome.i18n.getMessage('labelUnreadCount');
-        var selectUnreadCount = Util.getFirstElementByClass(optionUnreadCount, 'optionSelect');
-        var optionOnlyNew = document.createElement('option');
-        optionOnlyNew.value = 'only_new';
-        optionOnlyNew.text = chrome.i18n.getMessage('labelUnreadCountOnlyNew');
-        var optionEverything = document.createElement('option');
-        optionEverything.value = 'everything';
-        optionEverything.text = chrome.i18n.getMessage('labelUnreadCountEverything');
-        selectUnreadCount.appendChild(optionOnlyNew);
-        selectUnreadCount.appendChild(optionEverything);
-        selectUnreadCount.value = options['unreadCount'];
-
-        var openInNewTab = document.getElementById('option_open_in_new_tab');
-        var openInNewTabCheckbox = Util.getFirstElementByClass(openInNewTab, 'optionCheckbox');
-        var labelOpenInNewTab = Util.getFirstElementByClass(openInNewTab, 'optionLabel');
-        labelOpenInNewTab.innerHTML = chrome.i18n.getMessage('labelOpenInNewTab');
-        if (options['openInNewTab']) {
-          openInNewTabCheckbox.checked = true;
-        }
-
-        var titleWhichFeedTypes = document.getElementById('title_which_feed_types');
-        titleWhichFeedTypes.innerHTML = chrome.i18n.getMessage('titleWhichFeedTypes');
-        var feedTypes = ['load_friend_feed', 'load_subscription_feed'];
-        for (var i = 0; i < feedTypes.length; ++i) {
-          var feedType = feedTypes[i];
-          var optionDiv = document.getElementById('option_' + feedType);
+        var titleWhichDocumentTypes = document.getElementById('title_which_document_types');
+        titleWhichDocumentTypes.innerHTML = chrome.i18n.getMessage('titleWhichDocumentTypes');
+        var docTypes = ['generic', 'document', 'presentation', 'spreadsheet', 'drawing', 'collection', 'form', 'image', 'pdf'];
+        for (var i = 0; i < docTypes.length; ++i) {
+          var docType = docTypes[i];
+          var optionDiv = document.getElementById('option_docs_' + docType);
           var label = Util.getFirstElementByClass(optionDiv, 'optionLabel');
-          label.innerHTML = chrome.i18n.getMessage('label_' + feedType);
-          if (options[feedType]) {
-            var checkboxFeedType = Util.getFirstElementByClass(optionDiv, 'optionCheckbox');
-            checkboxFeedType.checked = true;
-          }
-        }
-
-        var titleWhichEventTypes = document.getElementById('title_which_event_types');
-        titleWhichEventTypes.innerHTML = chrome.i18n.getMessage('titleWhichEventTypes');
-        var eventTypes = ['video_uploaded', 'video_favorited', 'video_liked', 'video_rated', 'video_commented'];
-        for (var i = 0; i < eventTypes.length; ++i) {
-          var eventType = eventTypes[i];
-          var optionDiv = document.getElementById('option_' + eventType);
-          var label = Util.getFirstElementByClass(optionDiv, 'optionLabel');
-          label.innerHTML = chrome.i18n.getMessage('label_' + eventType);
-          if (options[eventType]) {
+          label.innerHTML = chrome.i18n.getMessage('label_docs_' + docType);
+          if (options['docs_'+docType]) {
             var checkboxEventType = Util.getFirstElementByClass(optionDiv, 'optionCheckbox');
             checkboxEventType.checked = true;
           }
@@ -128,94 +54,25 @@
         var saveButton = document.getElementById('save_options');
         saveButton.innerHTML = chrome.i18n.getMessage('buttonSave');
         saveButton.addEventListener('mousedown', function() {
-          if (selectPollingInterval.value <= 0 ||
-            selectPollingInterval.value > YouTube.MAX_POLLING_INTERVAL) {
-            var placeholders = [
-              chrome.i18n.getMessage('labelPollingInterval'),
-              1, YouTube.MAX_POLLING_INTERVAL
-            ];
-            setMessage('errorMessage',
-                chrome.i18n.getMessage('errorInvalidOptionValue',
-                placeholders));
-            return;
-          }
-          if (selectNumFeedItems <= 0 &&
-            selectNumFeedItems.value > YouTube.MAX_NUM_FEED_ITEMS) {
-            var placeholders = [
-              chrome.i18n.getMessage('labelNumFeedItems'),
-              1, YouTube.MAX_NUM_FEED_ITEMS
-            ];
-            setMessage('errorMessage',
-                chrome.i18n.getMessage('errorInvalidOptionValue',
-                placeholders));
-            return;
-          }
-          if (selectNumFeedItemsShown <= 0 &&
-              selectNumFeedItemsShown.value > YouTube.MAX_NUM_FEED_ITEMS_SHOWN) {
-            var placeholders = [
-              chrome.i18n.getMessage('labelNumFeedItemsShown'),
-              1, YouTube.MAX_NUM_FEED_ITEMS_SHOWN
-            ];
-            setMessage('errorMessage',
-                chrome.i18n.getMessage('errorInvalidOptionValue',
-                placeholders));
-            return;
-          }
-          var validUnreadCountValues = {
-            'only_new': true,
-            'everything': true,
-          }
-          if (!validUnreadCountValues[selectUnreadCount.value]) {
-            var placeholders = [
-              chrome.i18n.getMessage('labelUnredCount'),
-              chrome.i18n.getMessage('labelUnreadCountOnlyNew'),
-              chrome.i18n.getMessage('labelUnreadCountEverything')
-            ];
-            setMessage('errorMessage',
-                chrome.i18n.getMessage('errorInvalidOptionValue',
-                placeholders));
-            return;
-          }
-          setMessage('successMessage', chrome.i18n.getMessage('messageSavedOptions'));
-
           var newOptions = {
-              'pollingInterval': parseInt(selectPollingInterval.value),
-              'numFeedItems': parseInt(selectNumFeedItems.value),
-              'numFeedItemsShown': parseInt(selectNumFeedItemsShown.value),
-              'unreadCount': selectUnreadCount.value,
           };
 
-          for (var i = 0; i < feedTypes.length; ++i) {
-            var feedType = feedTypes[i];
-            var optionDiv = document.getElementById('option_' + feedType);
-            var checkboxFeedType = Util.getFirstElementByClass(optionDiv, 'optionCheckbox');
-            if (checkboxFeedType.checked) {
-              newOptions[feedType] = true;
+          for (var i = 0; i < docTypes.length; ++i) {
+            var docType = docTypes[i];
+            var optionDiv = document.getElementById('option_docs_' + docType);
+            var checkboxDocType = Util.getFirstElementByClass(optionDiv, 'optionCheckbox');
+            if (checkboxDocType.checked) {
+              newOptions['docs_'+docType] = true;
             } else {
-              newOptions[feedType] = false;
+              newOptions['docs_'+docType] = false;
             }
           }
+          gdocs.saveOptions(newOptions);
 
-          for (var i = 0; i < eventTypes.length; ++i) {
-            var eventType = eventTypes[i];
-            var optionDiv = document.getElementById('option_' + eventType);
-            var checkboxEventType = Util.getFirstElementByClass(optionDiv, 'optionCheckbox');
-            if (checkboxEventType.checked) {
-              newOptions[eventType] = true;
-            } else {
-              newOptions[eventType] = false;
-            }
-          }
+          setMessage('successMessage', chrome.i18n.getMessage('messageSavedOptions'));
 
-          if (openInNewTabCheckbox.checked) {
-            newOptions['openInNewTab'] = true;
-          } else {
-            newOptions['openInNewTab'] = false;
-          }
-
-          youtube.saveOptions(newOptions);
-          youtube.startPolling();
-          youtube.setVisualState();
+          gdocs.startPolling();
+          gdocs.setVisualState();
         });
       }
 
@@ -245,58 +102,41 @@
       </div>
       <div id='message' style='display: none;'></div>
       <div id='options'>
-        <div id='option_polling_interval' class='optionDiv'>
-          <label class='optionLabel'></label>
-          <select class='optionSelect'></select>
-          <span class='optionLabelMetric'></span>
-        </div>
-        <div id='option_num_feed_items' class='optionDiv'>
-          <label class='optionLabel'></label>
-          <select class='optionSelect'></select>
-        </div>
-        <div id='option_num_feed_items_shown' class='optionDiv'>
-          <label class='optionLabel'></label>
-          <select class='optionSelect'></select>
-        </div>
-        <div id='option_unread_count' class='optionDiv'>
-          <label class='optionLabel'></label>
-          <select class='optionSelect'></select>
-        </div>
-        <div id='option_open_in_new_tab' class='optionDiv'>
+      <div id='document_types'>
+        <p id='title_which_document_types'></p>
+        <div id='option_docs_generic' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-      </div>
-      <div id='feed_types'>
-        <p id='title_which_feed_types'></p>
-        <div id='option_load_friend_feed' class='feedTypeDiv'>
+        <div id='option_docs_document' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-        <div id='option_load_subscription_feed' class='feedTypeDiv'>
+        <div id='option_docs_presentation' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-      </div>
-      <div id='event_types'>
-        <p id='title_which_event_types'></p>
-        <div id='option_video_uploaded' class='eventTypeDiv'>
+        <div id='option_docs_spreadsheet' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-        <div id='option_video_favorited' class='eventTypeDiv'>
+        <div id='option_docs_form' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-        <div id='option_video_rated' class='eventTypeDiv'>
+        <div id='option_docs_drawing' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-        <div id='option_video_liked' class='eventTypeDiv'>
+        <div id='option_docs_collection' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
-        <div id='option_video_commented' class='eventTypeDiv'>
+        <div id='option_docs_pdf' class='docTypeDiv'>
+          <label class='optionLabel'></label>
+          <input type='checkbox' class='optionCheckbox'>
+        </div>
+        <div id='option_docs_image' class='docTypeDiv'>
           <label class='optionLabel'></label>
           <input type='checkbox' class='optionCheckbox'>
         </div>
