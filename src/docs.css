@@ -101,32 +101,40 @@ img.message-sprite {
   padding: 0;
 }
 
-img.message-sprite.document {
+img.message-sprite.generic {
  background-position: 0px 0px;
 }
 
-img.message-sprite.presentation {
+img.message-sprite.document {
  background-position: -11px 0px;
 }
 
-img.message-sprite.spreadsheet {
+img.message-sprite.presentation {
  background-position: -22px 0px;
 }
 
-img.message-sprite.form {
+img.message-sprite.spreadsheet {
  background-position: -33px 0px;
 }
 
-img.message-sprite.drawing {
+img.message-sprite.form {
  background-position: -44px 0px;
 }
 
-img.message-sprite.collection {
+img.message-sprite.drawing {
  background-position: -55px 0px;
 }
 
-img.message-sprite.pdf {
+img.message-sprite.collection {
  background-position: -66px 0px;
+}
+
+img.message-sprite.pdf {
+ background-position: -77px 0px;
+}
+
+img.message-sprite.image {
+ background-position: -88px 0px;
 }
 
 span.feed-entry-timestamp {

@@ -98,13 +98,15 @@ GoogleDocs.prototype.getOptions = function() {
  * @type {Array.<String>}
  */
 GoogleDocs.SUPPORTED_DOC_TYPES = [
+    'generic',
     'document',
     'presentation',
     'spreadsheet',
     'form',
     'drawing',
     'collection',
-    'pdf'
+    'pdf',
+    'image'
 ];
 
 
@@ -403,11 +405,15 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   for (var i = 0; i < feedItem['category'].length; ++i) {
       if (feedItem['category'][i]['scheme'] == "http://schemas.google.com/g/2005#kind") {
 	  docType = feedItem['category'][i]['label'];
+	  // Image docType attaches file type like 'image/png', 'image/jpg', remove that
+	  if (docType.match(/image/) != null) {
+	      docType = 'image';
+	  }
 	  break;
       }
   }
   if (GoogleDocs.SUPPORTED_DOC_TYPES.indexOf(docType) == -1) {
-      docType = 'document';
+      docType = 'generic';
   }
   Util.setCssClass(actionIcon,
                    'feed-entry-action-icon message-sprite ' + docType);
