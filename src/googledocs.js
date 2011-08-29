@@ -465,9 +465,12 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
                     '(' + Util.formatTimeSince(feedEntryTimestamp) + ')');
 
   var docUrl = '';
+  var thumbnailUrl = '';
   for (var i = 0; i < feedItem['link'].length; ++i) {
       if (feedItem['link'][i]['rel'] == "alternate") {
 	  docUrl = feedItem['link'][i]['href'];
+      } else if (feedItem['link'][i]['rel'] == "http://schemas.google.com/docs/2007/thumbnail") {
+	  thumbnailUrl = feedItem['link'][i]['href'];
       }
   }
 
@@ -482,6 +485,11 @@ GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
   Util.setAnchorHref(domFeedEntry, 'docs-entry-link', docUrl);
   var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown';
   Util.setChildHTML(domFeedEntry, 'docs-entry-byuser', 'by ' + modifiedBy);
+
+  if (thumbnailUrl != '') {
+      var popup = '<img src="'+thumbnailUrl+'">';
+      Util.setChildHTML(domFeedEntry, 'popup', popup);
+  }
 
   Util.setCssClass(domFeedEntry, 'feed-entry');
   return domFeedEntry;
