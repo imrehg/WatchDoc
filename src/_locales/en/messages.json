@@ -221,6 +221,10 @@
     "message": "Presentations",
     "description": "The label for the checkbox for presentations."
   },
+  "label_docs_powerpoint": {
+    "message": "MS PowerPoint presentations",
+    "description": "The label for the checkbox for powerpoint presentations."
+  },
   "label_docs_spreadsheet": {
     "message": "Spreadsheets",
     "description": "The label for the checkbox for spreadsheets."

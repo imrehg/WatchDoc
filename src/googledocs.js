@@ -68,7 +68,10 @@ GoogleDocs = function(oauth) {
                   false,
     'docs_image' :  localStorage['docs_image'] === undefined ||
                    localStorage['docs_image'] === 'true' ||
-                   false
+                   false,
+    'docs_powerpoint' :  localStorage['docs_powerpoint'] === undefined ||
+                         localStorage['docs_powerpoint'] === 'true' ||
+                         false
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
@@ -144,7 +147,8 @@ GoogleDocs.SUPPORTED_DOC_TYPES = [
     'drawing',
     'collection',
     'pdf',
-    'image'
+    'image',
+    'powerpoint'
 ];
 
 
@@ -440,6 +444,8 @@ GoogleDocs.prototype.extractDocType = function(feedItem) {
 	  // Image docType attaches file type like 'image/png', 'image/jpg', remove that
 	  if (docType.match(/image/) != null) {
 	      docType = 'image';
+	  } else if (docType == "application/vnd.ms-powerpoint") { // Powerpoint docType;
+	      docType = 'powerpoint';
 	  }
 	  break;
       }

@@ -137,6 +137,10 @@ img.message-sprite.image {
  background-position: -88px 0px;
 }
 
+img.message-sprite.powerpoint {
+ background-position: -99px 0px;
+}
+
 span.feed-entry-timestamp {
   color: #666666;
   font-size: 11px;
