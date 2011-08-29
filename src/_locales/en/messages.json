@@ -31,6 +31,10 @@
     "message": "Logout",
     "description": "The text for the logout button."
   },
+  "labelDocsHome": {
+    "message": "Go to your Google Docs home",
+    "description": "The header label to go to the user's Google Docs page."
+  },
   "buttonSave": {
     "message": "Save settings",
     "description": "The text for the save button."
