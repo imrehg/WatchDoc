@@ -365,6 +365,30 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
         };
         if (this.shouldShowFeedItem_(feedItem, this.options_)) {
           ++this.numNewItems_;
+
+          // Find document URL
+          var docUrl = '';
+          for (var k = 0; k < feedItem['link'].length; ++i) {
+	      if (feedItem['link'][k]['rel'] == "alternate") {
+                  docUrl = feedItem['link'][k]['href'];
+		  break;
+	      }
+	  }
+
+          // Assemble data needed for desktop notification
+          var notifData = {
+	      title: feedItem['title']['$t'],
+	      timestamp: Util.formatTimeSince(feedItem['updated']['$t']),
+              doctype: this.extractDocType(feedItem),
+              modifiedBy: feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown',
+	      docUrl: docUrl,
+	      timeout: 10
+	  };
+	  var notification = webkitNotifications.createHTMLNotification(
+	      'notification.html?'+Util.serialize(notifData)
+	  );
+          notification.show();
+
         }
       }
 	this.lastTimeStamp_ = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || this.lastTimeStamp_;
@@ -644,6 +668,32 @@ Util.formatTimeSince = function(timeString) {
 };
 
 
+/**
+ * Serialize Javascript object to create url query string
+ * From: http://stackoverflow.com/questions/1714786/querystring-encoding-of-a-javascript-object
+ * @param {Object} obj The input object
+ * @return {String} Query string created from obj
+ */
+Util.serialize = function(obj) {
+  var str = [];
+  for(var p in obj)
+     str.push(p + "=" + encodeURIComponent(obj[p]));
+  return str.join("&");
+};
+
+
 GoogleDocs.prototype.openInTab = function(url) {
     chrome.tabs.create({'url': url} );
+};
+
+
+/**
+ * Create new popup window for the given URL
+ * @param {String} url The url to open in the new window
+ */
+GoogleDocs.prototype.openInNewWindow = function(url) {
+    chrome.windows.create({'url': url,
+			   'focused': true,
+			   'type': 'normal'
+			  });
 };

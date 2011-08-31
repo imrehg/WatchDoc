@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="docs.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.js"></script>
+    <script type="text/javascript" src="jquery.url.js"></script>
+    <script type="text/javascript" src="googledocs.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+           var gdocs = chrome.extension.getBackgroundPage().gdocs;
+           var url = $.url();
+
+           var title = url.param('title');
+           var timestamp = url.param('timestamp');
+           var doctype = url.param('doctype');
+           var modifiedBy = url.param('modifiedBy');
+           var docUrl = decodeURIComponent(url.param('docUrl'));
+           var timeout = parseInt(url.param('timeout')) || 10;
+
+	   $('span.feed-entry-title-text').html(title);
+	   $('span.feed-entry-timestamp').html(timestamp);
+	   $('span.docs-entry-byuser').html('by '+modifiedBy);
+	   $('img.feed-entry-action-icon').addClass('message-sprite '+doctype);
+
+           $("a.docs-entry-link").attr("href", docUrl);
+	   $('a.docs-entry-link').click(function() {
+	     gdocs.openInNewWindow(docUrl);
+	     gdocs.resetNumNewItems();
+	     window.close();
+             });
+
+           window.setTimeout(function() { 
+                         window.close();
+                        }, timeout * 1000);
+        });
+    </script>
+  </head>
+  <body>
+  <div class='feed-entry-title'>
+    <img class="feed-entry-action-icon" src='img/pixel.gif'>
+    <a class="docs-entry-link">
+      <span class='feed-entry-title-text'></span>
+    </a>
+    <br>
+    <span class='docs-entry-byuser'></span>
+    <span class='feed-entry-timestamp'></span>
+  </div>
+  </body>
+</html>

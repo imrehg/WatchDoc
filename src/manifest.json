@@ -16,6 +16,7 @@
   "options_page": "options.html",
   "permissions": [
     "tabs",
+    "notifications",
     "https://docs.google.com/feeds/*",
     "https://www.google.com/accounts/OAuthGetRequestToken",
     "https://www.google.com/accounts/OAuthAuthorizeToken",
