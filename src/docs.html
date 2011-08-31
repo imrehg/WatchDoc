@@ -51,7 +51,8 @@
         docsHomeLink.addEventListener('mousedown', function(e) {
               gdocs.openInTab(e.currentTarget.href);
         });
-        docsHomeLink.innerHTML = chrome.i18n.getMessage('labelDocsHome')+'<br/>('+gdocs.userEmail_+')';
+        var userEmail = gdocs.userEmail_ && "("+gdocs.userEmail_+")" || ''
+        docsHomeLink.innerHTML = chrome.i18n.getMessage('labelDocsHome')+'<br/>'+userEmail;
 
         if (gdocs.isLoggedIn()) {
           logoutButton.innerHTML = chrome.i18n.getMessage('buttonLogout');
