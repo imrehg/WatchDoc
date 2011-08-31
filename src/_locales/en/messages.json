@@ -248,5 +248,13 @@
   "label_docs_image": {
     "message": "Images",
     "description": "The label for the checkbox for images."
+  },
+  "titleDesktopNotification": {
+    "message": "Desktop notification:",
+    "description": "The title for the section for desktop notification settings."
+  },
+  "label_show_desktop_notification": {
+    "message": "Show desktop notification",
+    "description": "The label for the checkbox for desktop notification."
   }
 }

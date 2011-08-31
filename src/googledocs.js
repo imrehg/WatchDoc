@@ -71,7 +71,10 @@ GoogleDocs = function(oauth) {
                    false,
     'docs_powerpoint' :  localStorage['docs_powerpoint'] === undefined ||
                          localStorage['docs_powerpoint'] === 'true' ||
-                         false
+                         false,
+    'show_desktop_notification' :  localStorage['show_desktop_notification'] === undefined ||
+                                   localStorage['show_desktop_notification'] === 'true' ||
+                                   false
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
@@ -366,28 +369,31 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
         if (this.shouldShowFeedItem_(feedItem, this.options_)) {
           ++this.numNewItems_;
 
-          // Find document URL
-          var docUrl = '';
-          for (var k = 0; k < feedItem['link'].length; ++i) {
-	      if (feedItem['link'][k]['rel'] == "alternate") {
-                  docUrl = feedItem['link'][k]['href'];
-		  break;
-	      }
-	  }
+          // Only show desktop notification if the user wants it
+          if (this.options_['show_desktop_notification']) {
+            // Find document URL
+            var docUrl = '';
+            for (var k = 0; k < feedItem['link'].length; ++i) {
+              if (feedItem['link'][k]['rel'] == "alternate") {
+                docUrl = feedItem['link'][k]['href'];
+                break;
+              }
+            }
 
-          // Assemble data needed for desktop notification
-          var notifData = {
-	      title: feedItem['title']['$t'],
-	      timestamp: Util.formatTimeSince(feedItem['updated']['$t']),
-              doctype: this.extractDocType(feedItem),
-              modifiedBy: feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown',
-	      docUrl: docUrl,
-	      timeout: 10
-	  };
-	  var notification = webkitNotifications.createHTMLNotification(
-	      'notification.html?'+Util.serialize(notifData)
-	  );
-          notification.show();
+            // Assemble data needed for desktop notification
+            var notifData = {
+               title: feedItem['title']['$t'],
+               timestamp: Util.formatTimeSince(feedItem['updated']['$t']),
+               doctype: this.extractDocType(feedItem),
+               modifiedBy: feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] && feedItem['gd$lastModifiedBy']['name']['$t'] || 'unknown',
+              docUrl: docUrl,
+              timeout: 10
+            };
+            var notification = webkitNotifications.createHTMLNotification(
+              'notification.html?'+Util.serialize(notifData)
+            );
+            notification.show();
+	  }
 
         }
       }
