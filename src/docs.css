@@ -86,10 +86,10 @@ div.feed-entry-title {
 
 img.feed-entry-action-icon {
   cursor: default;
-  height: 11px;
+  height: 15px;
   margin-right: 4px;
   vertical-align: middle;
-  width: 11px;
+  width: 15px;
 }
 
 img.message-sprite {
@@ -106,39 +106,39 @@ img.message-sprite.generic {
 }
 
 img.message-sprite.document {
- background-position: -11px 0px;
+ background-position: -15px 0px;
 }
 
 img.message-sprite.presentation {
- background-position: -22px 0px;
+ background-position: -30px 0px;
 }
 
 img.message-sprite.spreadsheet {
- background-position: -33px 0px;
+ background-position: -45px 0px;
 }
 
 img.message-sprite.form {
- background-position: -44px 0px;
+ background-position: -60px 0px;
 }
 
 img.message-sprite.drawing {
- background-position: -55px 0px;
+ background-position: -75px 0px;
 }
 
 img.message-sprite.collection {
- background-position: -66px 0px;
+ background-position: -90px 0px;
 }
 
 img.message-sprite.pdf {
- background-position: -77px 0px;
+ background-position: -105px 0px;
 }
 
 img.message-sprite.image {
- background-position: -88px 0px;
+ background-position: -120px 0px;
 }
 
 img.message-sprite.powerpoint {
- background-position: -99px 0px;
+ background-position: -135px 0px;
 }
 
 span.feed-entry-timestamp {
