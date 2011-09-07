@@ -343,6 +343,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
       var lastViewed = feedItem['gd$lastViewed'] && feedItem['gd$lastViewed']['$t'] || "2000-01-01T00:00:00.000Z";
       var lastUpdated = feedItem['updated'] && feedItem['updated']['$t'] || "2000-01-01T00:00:00.000Z";
       var modifiedBy = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['email'] && feedItem['gd$lastModifiedBy']['email']['$t'] || 'unknown';
+      var deletedFile = feedItem['gd$deleted'] && true || false;
 
       if (this.feedMap_[itemId]) {
 	  var oldUpdated = this.feedMap_[itemId]['item']['updated'] && this.feedMap_[itemId]['item']['updated']['$t'] || "2000-01-01T00:00:00.000Z";
@@ -357,6 +358,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 
       // Strict critera for display items: not "remove changes", not in store already, not on "not-show list", hasn't been viewed, not self-modified"
       if (!feedItem['docs$removed'] &&
+	  !deletedFile &&
 	  !this.feedMap_[itemId] &&
 	  !localStorage['rm-' + itemId] &&
 	  (lastViewed < lastUpdated) &&
