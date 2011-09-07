@@ -292,7 +292,6 @@ GoogleDocs.prototype.startPolling = function() {
   if (this.pollingIntervalId_) {
     window.clearInterval(this.pollingIntervalId_);
   }
-  this.getTheFeed_();
   this.pollingIntervalId_ = window.setInterval(
       Util.bind(this.getTheFeed_, this),
       this.options_['pollingInterval'] * 60000);
