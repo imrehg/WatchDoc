@@ -402,7 +402,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
           if (this.options_['show_desktop_notification']) {
             // Find document URL
             var docUrl = '';
-            for (var k = 0; k < feedItem['link'].length; ++i) {
+            for (var k = 0; k < feedItem['link'].length; ++k) {
               if (feedItem['link'][k]['rel'] == "alternate") {
                 docUrl = feedItem['link'][k]['href'];
                 break;
