@@ -31,7 +31,9 @@
     <script type="text/javascript">
 
       function initialize() {
-        var gdocs = chrome.extension.getBackgroundPage().gdocs;
+        var bkg = chrome.extension.getBackgroundPage();
+        var gdocs = bkg.gdocs;
+        bkg.console.log(Util.getTime(gdocs)+' Show doclist window');
         var loginButton = document.getElementById('login_button');
         loginButton.addEventListener('mousedown', function () {
           gdocs.login();

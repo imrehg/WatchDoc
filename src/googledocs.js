@@ -79,6 +79,7 @@ GoogleDocs = function(oauth) {
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
   this.userEmail_ = localStorage['userEmail'] || null;
+  this.starttime = 0;
 };
 
 
@@ -173,6 +174,7 @@ GoogleDocs.CHANGES_URL = 'https://docs.google.com/feeds/default/private/changes'
  * Logs in the user.
  */
 GoogleDocs.prototype.login = function() {
+  console.log(Util.getTime(this)+' Logging in.');
   this.oauth_.authorize(Util.bind(this.onAuthorized_, this));
 };
 
@@ -239,6 +241,8 @@ GoogleDocs.prototype.setVisualState = function() {
  * Initializes a GoogleDocs object.
  */
 GoogleDocs.prototype.initialize = function() {
+  this.starttime = Util.getTime();
+  console.log(Util.getTime(this)+' starting all up');
   this.setVisualState();
   // chrome.tabs.onRemoved.addListener(Util.bind(this.onTabRemoved_, this));
 };
@@ -248,6 +252,7 @@ GoogleDocs.prototype.initialize = function() {
  * Get metadata feed
  */
 GoogleDocs.prototype.getMetadata = function() {
+  console.log(Util.getTime(this)+' Getting user metadata');
   if (this.oauth_.hasToken()) {
       this.oauth_.sendSignedRequest(GoogleDocs.METADATA_URL,
 				    Util.bind(this.receivedMetadata, this),
@@ -267,6 +272,7 @@ GoogleDocs.prototype.getMetadata = function() {
  * @param {XmlHttpRequest} xhr The XmlHttpRequest that finished executing.
  */
 GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
+  console.log(Util.getTime(this)+' Received metadata');
   var data = JSON.parse(text);
   var email = data['entry']['author'][0]['email']['$t'] || '';
   this.setUserEmail(email);
@@ -298,7 +304,9 @@ GoogleDocs.prototype.startPolling = function() {
 };
 
 GoogleDocs.prototype.getTheFeed_ = function() {
+  console.log(Util.getTime(this)+' Trying to get the feed.');
   if (this.oauth_.hasToken() && this.userEmail_) {
+      console.log(Util.getTime(this)+' Good credentials and email, sending request.');
       var nextTimeStamp = this.lastTimeStamp_ + 1;
       this.oauth_.sendSignedRequest(GoogleDocs.CHANGES_URL,
           Util.bind(this.onFeedReceived_, this) , {
@@ -330,10 +338,14 @@ GoogleDocs.prototype.sortFunction_ = function(a, b) {
 
 GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) { 
   var data = JSON.parse(text);
-  console.log(text);
+  console.log(Util.getTime(this)+' Feed received');
 
   if (data && data['feed'] && data['feed']['entry']) {
     var feedItems = data['feed']['entry'];
+    console.log(Util.getTime(this)+' Number of items: '+feedItems.length);
+    console.log(Util.getTime(this)+' Changestamp of first item: '+ feedItems[0]['docs$changestamp']['value']);
+    var display = 0;
+    var nondisplay = 0;
     for (var i = 0; i < feedItems.length; ++i) {
       var feedItem = feedItems[i];
       var itemId = feedItem['id'] && feedItem['id']['$t'];
@@ -397,16 +409,24 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 	  }
 
         }
+          display = display + 1;
+      } else {
+	  nondisplay = nondisplay + 1;
       }
 	this.lastTimeStamp_ = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || this.lastTimeStamp_;
     }
+    console.log(Util.getTime(this)+ ' Went through all: '+display+'/'+nondisplay);
     this.sortItems_();
+    console.log(Util.getTime(this)+ ' Sorted, ready to show');
     this.setBadgeText_();
 
     var largestChangestamp = data['feed']['docs$largestChangestamp'] && parseInt(data['feed']['docs$largestChangestamp']['value']) || 0;
     // If haven't downloaded all changes yet, run the request again
     if (this.lastTimeStamp_ < largestChangestamp) {
        this.getTheFeed_();
+    } else {
+       // finished getting all the items
+       console.log(Util.getTime(this)+' finished getting feed items, should be displaying '+this.feedItems_.length);
     }
   }
 
@@ -704,3 +724,18 @@ GoogleDocs.prototype.openInNewWindow = function(url) {
 			   'type': 'normal'
 			  });
 };
+
+
+/**
+ * Get unique timestamp for logging
+ * @param {Object} obj input GoogleDocs object which has a starttime property
+ * @return {time} timestamp (seconds)
+ */
+Util.getTime = function(obj) {
+  if (obj === undefined) {
+      starttime = 0;
+  } else {
+      starttime = obj.starttime;
+  }
+  return (new Date().getTime()/1000 - starttime).toFixed(3);
+}
