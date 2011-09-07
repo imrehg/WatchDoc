@@ -78,6 +78,7 @@ GoogleDocs = function(oauth) {
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
+  this.oldestNewItem = localStorage['oldestNewItem'] !== 'undefined' && localStorage['oldestNewItem'] || 0;
   this.userEmail_ = localStorage['userEmail'] || null;
   this.starttime = 0;
 };
@@ -215,6 +216,7 @@ GoogleDocs.prototype.clearData = function() {
   this.feedMap_ = {};
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
+  this.oldestNewItem = 0;
   this.userEmail_ = null;
   localStorage.clear();
 }
@@ -308,6 +310,10 @@ GoogleDocs.prototype.getTheFeed_ = function() {
   if (this.oauth_.hasToken() && this.userEmail_) {
       console.log(Util.getTime(this)+' Good credentials and email, sending request.');
       var nextTimeStamp = this.lastTimeStamp_ + 1;
+      // If the oldest item is newer than that, don't have to look back
+      if (this.oldestNewItem > nextTimeStamp) {
+	  nextTimeStamp = this.oldestNewItem;
+      }
       this.oauth_.sendSignedRequest(GoogleDocs.CHANGES_URL,
           Util.bind(this.onFeedReceived_, this) , {
             'parameters' : {
@@ -407,7 +413,8 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
             );
             notification.show();
 	  }
-
+          var changeStamp = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || -1;
+          this.setOldestNewItem(changeStamp);
         }
           display = display + 1;
       } else {
@@ -426,11 +433,26 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
        this.getTheFeed_();
     } else {
        // finished getting all the items
+       this.setOldestNewItem(this.lastTimeStamp_);
        console.log(Util.getTime(this)+' finished getting feed items, should be displaying '+this.feedItems_.length);
     }
   }
 
 }
+
+
+/**
+ * Check and set the oldest new item value if it does not exist yet or if older than previously
+ * @param {number} changeStamp the change timestamp that is attempted to change
+ */
+GoogleDocs.prototype.setOldestNewItem = function(changeStamp) {
+    if ((this.oldestNewItem < 1) ||
+	(changeStamp < this.oldestNewItem)) {
+       console.log(Util.getTime(this)+' set oldest new item timestamp: '+this.oldestNewItem+'->'+changeStamp);
+       this.oldestNewItem = changeStamp;
+       localStorage['oldestNewItem'] = changeStamp;
+    }
+};
 
 
 /**
