@@ -78,7 +78,7 @@ GoogleDocs = function(oauth) {
   };
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
-  this.oldestNewItem = localStorage['oldestNewItem'] !== 'undefined' && localStorage['oldestNewItem'] || 0;
+  this.oldestNewItem_ = localStorage['oldestNewItem'] !== 'undefined' && localStorage['oldestNewItem'] || 0;
   this.userEmail_ = localStorage['userEmail'] || null;
   this.starttime = 0;
 };
@@ -101,6 +101,12 @@ GoogleDocs.prototype.saveOptions = function(options) {
  * @type {number}
  */
 GoogleDocs.prototype.numNewItems_;
+
+
+/**
+ * @type {number}
+ */
+GoogleDocs.prototype.oldestNewItem_;
 
 
 /**
@@ -216,7 +222,7 @@ GoogleDocs.prototype.clearData = function() {
   this.feedMap_ = {};
   this.numNewItems_ = 0;
   this.lastTimeStamp_ = 0;
-  this.oldestNewItem = 0;
+  this.oldestNewItem_ = 0;
   this.userEmail_ = null;
   localStorage.clear();
 }
@@ -311,8 +317,12 @@ GoogleDocs.prototype.getTheFeed_ = function() {
       console.log(Util.getTime(this)+' Good credentials and email, sending request.');
       var nextTimeStamp = this.lastTimeStamp_ + 1;
       // If the oldest item is newer than that, don't have to look back
-      if (this.oldestNewItem > nextTimeStamp) {
-	  nextTimeStamp = this.oldestNewItem;
+      if (this.oldestNewItem_ > nextTimeStamp) {
+	  nextTimeStamp = this.oldestNewItem_;
+          // If starting in the begninning then zero oldestNewItem info out so we can renew it
+          if (this.lastTimeStamp_ == 0) {
+	     this.oldestNewItem_ = 0;
+	  }
       }
       this.oauth_.sendSignedRequest(GoogleDocs.CHANGES_URL,
           Util.bind(this.onFeedReceived_, this) , {
@@ -434,7 +444,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     } else {
        // finished getting all the items
        this.setOldestNewItem(this.lastTimeStamp_);
-       console.log(Util.getTime(this)+' finished getting feed items, should be displaying '+this.feedItems_.length);
+       console.log(Util.getTime(this)+' finished getting feed items, should be displaying '+this.feedItems_.length+'; largest changestamp: '+largestChangestamp);
     }
   }
 
@@ -446,10 +456,10 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
  * @param {number} changeStamp the change timestamp that is attempted to change
  */
 GoogleDocs.prototype.setOldestNewItem = function(changeStamp) {
-    if ((this.oldestNewItem < 1) ||
-	(changeStamp < this.oldestNewItem)) {
-       console.log(Util.getTime(this)+' set oldest new item timestamp: '+this.oldestNewItem+'->'+changeStamp);
-       this.oldestNewItem = changeStamp;
+    if ((this.oldestNewItem_ < 1) ||
+	(changeStamp < this.oldestNewItem_)) {
+       console.log(Util.getTime(this)+' set oldest new item timestamp: '+this.oldestNewItem_+'->'+changeStamp);
+       this.oldestNewItem_ = changeStamp;
        localStorage['oldestNewItem'] = changeStamp;
     }
 };
