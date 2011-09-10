@@ -7,7 +7,8 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-           var gdocs = chrome.extension.getBackgroundPage().gdocs;
+           var bkg = chrome.extension.getBackgroundPage();
+           var gdocs = bkg.gdocs;
            var url = $.url();
 
            var title = url.param('title');
