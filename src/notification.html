@@ -11,10 +11,10 @@
            var gdocs = bkg.gdocs;
            var url = $.url();
 
-           var title = url.param('title');
+           var title = decodeURIComponent(url.param('title'));
            var timestamp = url.param('timestamp');
            var doctype = url.param('doctype');
-           var modifiedBy = url.param('modifiedBy');
+           var modifiedBy = decodeURIComponent(url.param('modifiedBy'));
            var docUrl = decodeURIComponent(url.param('docUrl'));
            var timeout = parseInt(url.param('timeout')) || 10;
 
