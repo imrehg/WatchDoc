@@ -398,6 +398,13 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
         if (this.shouldShowFeedItem_(feedItem, this.options_)) {
           ++this.numNewItems_;
 
+          // Looks like the user email addresses have @ replaced by %, so it is better to change it back
+	  var hasModifierName = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] || false;
+	  if (hasModifierName) {
+	      console.log('HASNAME!');
+	      feedItem['gd$lastModifiedBy']['name']['$t'] = feedItem['gd$lastModifiedBy']['name']['$t'].replace('%', '@');
+	  }
+
           // Only show desktop notification if the user wants it
           if (this.options_['show_desktop_notification']) {
             // Find document URL
