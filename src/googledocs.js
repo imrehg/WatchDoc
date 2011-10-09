@@ -409,7 +409,6 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
           // Looks like the user email addresses have @ replaced by %, so it is better to change it back
 	  var hasModifierName = feedItem['gd$lastModifiedBy'] && feedItem['gd$lastModifiedBy']['name'] || false;
 	  if (hasModifierName) {
-	      console.log('HASNAME!');
 	      feedItem['gd$lastModifiedBy']['name']['$t'] = feedItem['gd$lastModifiedBy']['name']['$t'].replace('%', '@');
 	  }
 
