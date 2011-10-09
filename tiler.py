@@ -34,6 +34,7 @@ filelist = ['icon_9_generic_list.png',
             'icon_9_image_list.png',
             'icon_9_powerpoint_list.png',
             'icon_9_fusion_list.png',
+            'icon_9_word_list.png',
             ]
 
 imgs = [png.Reader(filename).asRGBA() for filename in filelist]
