@@ -249,6 +249,14 @@
     "message": "Images",
     "description": "The label for the checkbox for images."
   },
+  "label_docs_word": {
+    "message": "MS Word documents",
+    "description": "The label for the checkbox for Word documents."
+  },
+  "label_docs_fusion": {
+    "message": "Tables",
+    "description": "The label for the checkbox for tables (internally called fusion)."
+  },
   "titleDesktopNotification": {
     "message": "Desktop notification:",
     "description": "The title for the section for desktop notification settings."

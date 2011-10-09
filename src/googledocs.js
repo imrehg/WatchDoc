@@ -72,6 +72,12 @@ GoogleDocs = function(oauth) {
     'docs_powerpoint' :  localStorage['docs_powerpoint'] === undefined ||
                          localStorage['docs_powerpoint'] === 'true' ||
                          false,
+    'docs_fusion' :  localStorage['docs_fusion'] === undefined ||
+                         localStorage['docs_fusion'] === 'true' ||
+                         false,
+    'docs_word' :  localStorage['docs_word'] === undefined ||
+                         localStorage['docs_word'] === 'true' ||
+                         false,
     'show_desktop_notification' :  localStorage['show_desktop_notification'] === undefined ||
                                    localStorage['show_desktop_notification'] === 'true' ||
                                    false
@@ -159,7 +165,9 @@ GoogleDocs.SUPPORTED_DOC_TYPES = [
     'collection',
     'pdf',
     'image',
-    'powerpoint'
+    'powerpoint',
+    'fusion',
+    'word'
 ];
 
 

@@ -141,6 +141,14 @@ img.message-sprite.powerpoint {
  background-position: -144px 0px;
 }
 
+img.message-sprite.fusion {
+ background-position: -160px 0px;
+}
+
+img.message-sprite.word {
+ background-position: -176px 0px;
+}
+
 span.feed-entry-timestamp {
   color: #666666;
   font-size: 11px;
