@@ -1,8 +1,8 @@
-// JQuery URL Parser plugin - https://github.com/allmarkedup/jQuery-URL-Parser
+// jQuery URL Parser plugin (No jQuery version!) - https://github.com/allmarkedup/jQuery-URL-Parser/tree/no-jquery
 // Written by Mark Perkins, mark@allmarkedup.com
 // License: http://unlicense.org/ (i.e. do what you want with it!)
 
-;(function($, undefined) {
+var purl = (function(undefined) {
     
     var tag2attr = {
         a       : 'href',
@@ -29,7 +29,7 @@
 	
 	function parseUri( url, strictMode )
 	{
-		var str = decodeURI( url ),
+		var str = url,
 		    res   = parser[ strictMode || false ? "strict" : "loose" ].exec( str ),
 		    uri = { attr : {}, param : {}, seg : {} },
 		    i   = 14;
@@ -47,23 +47,25 @@
 		uri.attr['query'].replace( querystring_parser, function ( $0, $1, $2 ){
 			if ($1)
 			{
-				uri.param['query'][$1] = $2;
+				uri.param['query'][$1] = decodeURIComponent($2);
 			}
 		});
 		
 		uri.attr['fragment'].replace( fragment_parser, function ( $0, $1, $2 ){
 			if ($1)
 			{
-				uri.param['fragment'][$1] = $2;
+				uri.param['fragment'][$1] = decodeURIComponent($2);
 			}
 		});
 				
 		// split path and fragement into segments
 		
-        uri.seg['path'] = uri.attr.path.replace(/^\/+|\/+$/g,'').split('/');
+        uri.seg['path'] = uri.attr.path.replace(/^\/+|\/+$/g,'').split('/').map(function(part) {return decodeURIComponent(part);});
         
-        uri.seg['fragment'] = uri.attr.fragment.replace(/^\/+|\/+$/g,'').split('/');
+        uri.seg['fragment'] = uri.attr.fragment.replace(/^\/+|\/+$/g,'').split('/').map(function(part) {return decodeURIComponent(part);});
         
+        uri.attr.host = uri.attr.host ? decodeURI(uri.attr.host) : ''; // International URLs
+
         // compile a 'base' domain attribute
         
         uri.attr['base'] = uri.attr.host ? uri.attr.protocol+"://"+uri.attr.host + (uri.attr.port ? ":"+uri.attr.port : '') : '';
@@ -78,20 +80,7 @@
 		return tn;
 	}
 	
-	$.fn.url = function( strictMode )
-	{
-	    var url = '';
-	    
-	    if ( this.length )
-	    {
-	        url = $(this).attr( getAttrName(this[0]) ) || '';
-	    }
-	    
-        return $.url( url, strictMode );
-	};
-	
-	$.url = function( url, strictMode )
-	{
+	return (function( url, strictMode ) {
 	    if ( arguments.length === 1 && url === true )
         {
             strictMode = true;
@@ -154,6 +143,6 @@
             
         };
         
-	};
+	});
 	
-})(jQuery);
+})();

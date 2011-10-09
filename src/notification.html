@@ -1,21 +1,21 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="docs.css" />
-    <script type="text/javascript" src="jquery-1.6.2.min.js"></script>
-    <script type="text/javascript" src="jquery.url.js"></script>
+    <script type="text/javascript" src="jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="purl.js"></script>
     <script type="text/javascript" src="googledocs.js"></script>
     <script type="text/javascript">
 
         $(document).ready(function() {
            var bkg = chrome.extension.getBackgroundPage();
            var gdocs = bkg.gdocs;
-           var url = $.url();
+           var url = purl();
 
-           var title = decodeURIComponent(url.param('title'));
+           var title = url.param('title');
            var timestamp = url.param('timestamp');
            var doctype = url.param('doctype');
-           var modifiedBy = decodeURIComponent(url.param('modifiedBy'));
-           var docUrl = decodeURIComponent(url.param('docUrl'));
+           var modifiedBy = url.param('modifiedBy');
+           var docUrl = url.param('docUrl');
            var timeout = parseInt(url.param('timeout')) || 10;
 
 	   $('span.feed-entry-title-text').html(title);
