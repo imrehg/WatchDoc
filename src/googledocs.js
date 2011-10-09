@@ -364,7 +364,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
   var data = JSON.parse(text);
   console.log(Util.getTime(this)+' Feed received');
 
-  if (data && data['feed'] && data['feed']['entry']) {
+  if (data && data['feed'] && data['feed']['entry'] && this.userEmail_ != null) {
     var feedItems = data['feed']['entry'];
     console.log(Util.getTime(this)+' Number of items: '+feedItems.length);
     console.log(Util.getTime(this)+' Changestamp of first item: '+ feedItems[0]['docs$changestamp']['value']);
@@ -505,7 +505,8 @@ GoogleDocs.prototype.buildFeedDom = function(feedEntryTemplate) {
 	//     alert(JSON.stringify(this.feedItems_[i]));
         // }
       try {
-        if (this.shouldShowFeedItem_(this.feedItems_[i], this.options_)) {
+        // select only documents that the user chose to show and also only if we know who the user is
+        if (this.shouldShowFeedItem_(this.feedItems_[i], this.options_) && this.userEmail_ != null) {
           var child = this.buildFeedItemElement_(feedEntryTemplate,
                                                  this.feedItems_[i]);
           if (child) {
