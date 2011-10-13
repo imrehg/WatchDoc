@@ -86,6 +86,7 @@ GoogleDocs = function(oauth) {
   this.lastTimeStamp_ = 0;
   this.oldestNewItem_ = localStorage['oldestNewItem'] !== 'undefined' && localStorage['oldestNewItem'] || 0;
   this.userEmail_ = localStorage['userEmail'] || null;
+  this.firstPoll = true;
   this.starttime = 0;
 };
 
@@ -232,6 +233,7 @@ GoogleDocs.prototype.clearData = function() {
   this.lastTimeStamp_ = 0;
   this.oldestNewItem_ = 0;
   this.userEmail_ = null;
+  this.firstPoll = true;
   localStorage.clear();
 }
 
@@ -413,7 +415,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 	  }
 
           // Only show desktop notification if the user wants it
-          if (this.options_['show_desktop_notification']) {
+          if (this.options_['show_desktop_notification'] && !this.firstPoll) {
             // Find document URL
             var docUrl = '';
             for (var k = 0; k < feedItem['link'].length; ++k) {
@@ -458,6 +460,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     } else {
        // finished getting all the items
        this.setOldestNewItem(this.lastTimeStamp_);
+       this.firstPoll = false;
        console.log(Util.getTime(this)+' finished getting feed items, should be displaying '+this.feedItems_.length+'; largest changestamp: '+largestChangestamp);
     }
   }
