@@ -32,7 +32,6 @@ GoogleDocs = function(oauth) {
   this.oauth_ = oauth;
   this.feedItems_ = [];
   this.feedMap_ = {};
-  this.videoTab_ = null;
   this.options_ = {
     'pollingInterval': localStorage['pollingInterval'] &&
                        parseInt(localStorage['pollingInterval']) ||
