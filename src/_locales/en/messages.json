@@ -35,6 +35,10 @@
     "message": "Go to your Google Docs home",
     "description": "The header label to go to the user's Google Docs page."
   },
+  "openAllLink": {
+    "message": "Open all documents in a new window",
+    "description": "Label for link to open all documents on the updated list."
+  },
   "buttonSave": {
     "message": "Save settings",
     "description": "The text for the save button."

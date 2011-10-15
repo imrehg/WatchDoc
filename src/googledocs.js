@@ -421,10 +421,21 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 	  (lastViewed < lastUpdated) &&
 	  (this.userEmail_ != modifiedBy)) {
         this.feedItems_.push(feedItem);
+
+        // Find document URL
+        var docUrl = '';
+        for (var k = 0; k < feedItem['link'].length; ++k) {
+          if (feedItem['link'][k]['rel'] == "alternate") {
+            docUrl = feedItem['link'][k]['href'];
+            break;
+          }
+        }
         this.feedMap_[itemId] = {
           'item': feedItem,
-          'removed': false
+          'removed': false,
+          'url': docUrl
         };
+
         if (this.shouldShowFeedItem_(feedItem, this.options_)) {
           ++this.numNewItems_;
 
@@ -436,15 +447,6 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
 
           // Only show desktop notification if the user wants it
           if (this.options_['show_desktop_notification'] && !this.firstPoll) {
-            // Find document URL
-            var docUrl = '';
-            for (var k = 0; k < feedItem['link'].length; ++k) {
-              if (feedItem['link'][k]['rel'] == "alternate") {
-                docUrl = feedItem['link'][k]['href'];
-                break;
-              }
-            }
-
             // Assemble data needed for desktop notification
             var notifData = {
                title: feedItem['title']['$t'],

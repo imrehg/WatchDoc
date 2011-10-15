@@ -55,6 +55,7 @@
         });
         var userEmail = gdocs.userEmail_ && "("+gdocs.userEmail_+")" || ''
         docsHomeLink.innerHTML = chrome.i18n.getMessage('labelDocsHome')+'<br/>'+userEmail;
+        var openAllLink = document.getElementById('docs-open-all-link');
 
         if (gdocs.isLoggedIn()) {
           logoutButton.innerHTML = chrome.i18n.getMessage('buttonLogout');
@@ -71,11 +72,32 @@
               gdocs.openInTab(e.currentTarget.href);
             });
           }
+
+	  // Create open all docs in new window link
+          var urls = [];
+          for (var key in gdocs.feedMap_) {
+             var thisUrl = gdocs.feedMap_[key]['url'];
+             if (thisUrl != '') {
+               urls.push(thisUrl);
+             }
+          }
+          var openAllLink = document.getElementById('docs-open-all-link');
+          if (urls.length > 0) {
+             openAllLink.innerHTML = chrome.i18n.getMessage('openAllLink');
+             openAllLink.addEventListener('mousedown', function(e) {
+                chrome.windows.create({url: urls, focused: true});
+             });
+             docsHomeLink.style.display = 'block';
+          } else {
+             openAllLink.style.display = 'none';
+          }
+
         } else {
           loginButton.innerHTML = chrome.i18n.getMessage('buttonLogin');
           loginButton.style.display = '';
 
           docsHomeLink.style.display = 'none';
+          openAllLink.style.display = 'none';
 
           var feedDom = document.getElementById('feed');
           var needLoginH2 = document.createElement('h2');
@@ -108,6 +130,7 @@
       <div id='docs-home'>
        <a id='docs-home-link' href="https://docs.google.com/#home"></a>
       </div>
+      <div id='docs-open-all'><a id='docs-open-all-link'></a></div>
       <div id='feed'></div>
       <button id='login_button' style='display: none;'></button>
       <button id='logout_button' style='display: none;'></button>

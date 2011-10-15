@@ -43,6 +43,11 @@ div#main {
   text-align: center;
 }
 
+div#docs-open-all {
+  text-align: center;
+  padding: 5px;
+}
+
 div#feed {
   text-align: left;
   margin-right: 10px;
