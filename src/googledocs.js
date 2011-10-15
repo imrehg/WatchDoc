@@ -22,6 +22,7 @@
  *
  */
 
+var DEBUG = false;
 
 /**
  * Constructor for a GoogleDocs object.
@@ -383,20 +384,40 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
       var deletedFile = feedItem['gd$deleted'] && true || false;
 
       if (this.feedMap_[itemId]) {
+
+          if (DEBUG) {
+             var o1 = JSON.stringify(this.feedMap_[itemId]['item']);
+             console.log('OLD----->');
+             console.log(o1);
+             var o2 = JSON.stringify(feedItem);
+             console.log('NEW----->');
+             console.log(o2);
+	  }
+
 	  var oldUpdated = this.feedMap_[itemId]['item']['updated'] && this.feedMap_[itemId]['item']['updated']['$t'] || "2000-01-01T00:00:00.000Z";
 	  // Remove document from the list if: 1) it's been updated and later we want to add new version to list, 2) has been viewed by user
           if ((oldUpdated < lastUpdated) ||
               (oldUpdated < lastViewed)) {
-              // remove old version and add new one!
+              // remove old version, if everything's well the new version will be added in the next step!
               this.feedItems_.splice(this.feedItems_.indexOf(this.feedMap_[itemId]['item']), 1);
 	      delete this.feedMap_[itemId];
-          }
+              console.log(Util.getTime(this)+' Removed previous item from list because of new update to it');
+          } else {
+              // Do not update just replace items
+              this.feedItems_[this.feedItems_.indexOf(this.feedMap_[itemId]['item'])] = feedItem;
+              this.feedMap_[itemId]['item'] = feedItem;
+              var thisTime = feedItem['docs$changestamp'] && parseInt(feedItem['docs$changestamp']['value']) || this.lastTimeStamp_;
+              if (thisTime > this.lastTimeStamp_) {
+		  this.lastTimeStamp_ = thisTime;
+	      }
+              console.log(Util.getTime(this)+' Version already exist, replaced');
+	  }
       }
 
       // Strict critera for display items: not "remove changes", not in store already, not on "not-show list", hasn't been viewed, not self-modified"
-      if (!feedItem['docs$removed'] &&
+      if (!this.feedMap_[itemId] &&
+          !feedItem['docs$removed'] &&
 	  !deletedFile &&
-	  !this.feedMap_[itemId] &&
 	  !localStorage['rm-' + itemId] &&
 	  (lastViewed < lastUpdated) &&
 	  (this.userEmail_ != modifiedBy)) {
@@ -457,6 +478,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     // If haven't downloaded all changes yet, run the request again
     if (this.lastTimeStamp_ < largestChangestamp) {
        this.getTheFeed_();
+       console.log(Util.getTime(this)+' Checked up to changestamp '+this.lastTimeStamp_+'; largest changestamp: '+largestChangestamp);
     } else {
        // finished getting all the items
        this.setOldestNewItem(this.lastTimeStamp_);
