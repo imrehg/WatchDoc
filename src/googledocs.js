@@ -236,7 +236,7 @@ GoogleDocs.prototype.clearData = function() {
   this.userEmail_ = null;
   this.firstPoll = true;
   localStorage.clear();
-}
+};
 
 
 /**
@@ -282,7 +282,7 @@ GoogleDocs.prototype.getMetadata = function() {
                                          }
                                      });
    }
-}
+};
 
 
 /**
@@ -296,7 +296,7 @@ GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
   var email = data['entry']['author'][0]['email']['$t'] || '';
   this.setUserEmail(email);
   this.getTheFeed_();
-}
+};
 
 
 /**
@@ -306,7 +306,7 @@ GoogleDocs.prototype.receivedMetadata = function(text, xhr) {
 GoogleDocs.prototype.setUserEmail = function(email) {
   localStorage['userEmail'] = email;
   this.userEmail_ = localStorage['userEmail'];
-}
+};
 
 
 /**
@@ -345,7 +345,7 @@ GoogleDocs.prototype.getTheFeed_ = function() {
             }
 	  });
   }
-}
+};
 
 GoogleDocs.prototype.sortItems_ = function() {
   this.feedItems_.sort(this.sortFunction_);
@@ -487,7 +487,7 @@ GoogleDocs.prototype.onFeedReceived_ = function(text, xhr) {
     }
   }
 
-}
+};
 
 
 /**
@@ -577,7 +577,7 @@ GoogleDocs.prototype.extractDocType = function(feedItem) {
       docType = 'generic';
   }
   return docType;
-}
+};
 
 
 GoogleDocs.prototype.buildFeedItemElement_ = function(template, feedItem) {
@@ -810,4 +810,4 @@ Util.getTime = function(obj) {
       starttime = obj.starttime;
   }
   return (new Date().getTime()/1000 - starttime).toFixed(3);
-}
+};
