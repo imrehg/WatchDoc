@@ -24,30 +24,12 @@
 -->
 <html>
   <head>
+    <script type="text/javascript" src="common.js"></script>
     <script type="text/javascript" src="chrome_ex_oauthsimple.js"></script>
     <script type="text/javascript" src="chrome_ex_oauth.js"></script> 
     <script type="text/javascript" src="googledocs.js"></script>
-    <script type="text/javascript">
-
-      var gdocs = null;
-
-      function initialize() {
-        var oauth = ChromeExOAuth.initBackgroundPage({
-          'request_url'     :  'https://www.google.com/accounts/OAuthGetRequestToken',
-          'authorize_url'   :  'https://www.google.com/accounts/OAuthAuthorizeToken',
-          'access_url'      :  'https://www.google.com/accounts/OAuthGetAccessToken',
-          'consumer_key'    :  'anonymous',
-          'consumer_secret' :  'anonymous',
-          'scope'           :  'https://docs.google.com/feeds/',
-          'app_name'        :  'WatchDoc Google Docs Notification Chrome Extension'
-        });
-        gdocs = new GoogleDocs(oauth);
-        gdocs.initialize();
-        gdocs.startPolling();
-      }
-    </script>
-
+    <script type="text/javascript" src="startup.js"></script>
   </head>
-  <body onload="initialize()">
+  <body>
   </body>
 </html>

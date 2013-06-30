@@ -1,17 +1,21 @@
 {
   "name": "__MSG_extName__",
-  "version": "0.0.13",
+  "version": "0.0.14",
+  "manifest_version": 2,
   "description": "__MSG_extDescription__",
   "icons": { "16": "img/docs16.png",
              "48": "img/docs48.png",
              "128": "img/docs128.png"
            },
   "default_locale": "en",
-  "background_page": "background.html",
+  "background": {
+     "persistent": true,
+     "page" : "background.html"
+  },
   "browser_action": {
     "default_icon": "img/docs16.png",
     "default_title": "__MSG_extTitle__",
-    "popup": "docs.html"
+    "default_popup": "docs.html"
   },
   "options_page": "options.html",
   "permissions": [
