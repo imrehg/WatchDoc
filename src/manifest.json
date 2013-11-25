@@ -1,7 +1,8 @@
 {
   "name": "__MSG_extName__",
-  "version": "0.0.16",
+  "version": "0.1.0",
   "manifest_version": 2,
+  "minimum_chrome_version": "29",
   "description": "__MSG_extDescription__",
   "icons": { "16": "img/docs16.png",
              "48": "img/docs48.png",
@@ -21,9 +22,14 @@
   "permissions": [
     "tabs",
     "notifications",
-    "https://docs.google.com/feeds/*",
-    "https://www.google.com/accounts/OAuthGetRequestToken",
-    "https://www.google.com/accounts/OAuthAuthorizeToken",
-    "https://www.google.com/accounts/OAuthGetAccessToken"
-  ]
+    "identity",
+    "https://www.googleapis.com/"
+  ],
+  "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDWiK555Q0kWfuqwHltFDoWAWYcOYeWx5zc8IABC8mwLBnsOlJZGQUZ80vb+0eZ6zH2U7MMu52OwrVD20Gid3eSDEUR9oEru113s0e3VLGu4L92xfoQSUQX/xOC3wni2qOnmNvVZaCmAQ1lJO/A4lwbt5xNpZlWx/9RIvMnPP+nXwIDAQAB",
+  "oauth2": {
+    "client_id": "136146885702-pooo7rud9tl3k6j6aa4dfdjq2mngcpdr.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/drive.readonly.metadata"
+    ]
+  }
 }
