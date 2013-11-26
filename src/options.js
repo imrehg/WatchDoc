@@ -80,4 +80,10 @@
         }, 5000);
       }
 
+var google = new OAuth2('google', {
+    client_id: '136146885702-pooo7rud9tl3k6j6aa4dfdjq2mngcpdr.apps.googleusercontent.com',
+    client_secret: 'ege6MPQ0cM7o6j5kh0_rggYW',
+    api_scope: 'https://www.googleapis.com/auth/drive.readonly.metadata'
+});
+
 addLoadEvent(initialize);

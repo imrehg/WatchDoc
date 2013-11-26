@@ -268,5 +268,9 @@
   "label_show_desktop_notification": {
     "message": "Show desktop notification",
     "description": "The label for the checkbox for desktop notification."
+  },
+  "titleFeedPage": {
+    "message": "Modified documents",
+    "description": "Title for modification list popup window."
   }
 }

@@ -1,18 +1,16 @@
 var gdocs = null;
 
 function initialize() {
-    var oauth = ChromeExOAuth.initBackgroundPage({
-          'request_url'     :  'https://www.google.com/accounts/OAuthGetRequestToken',
-          'authorize_url'   :  'https://www.google.com/accounts/OAuthAuthorizeToken',
-          'access_url'      :  'https://www.google.com/accounts/OAuthGetAccessToken',
-          'consumer_key'    :  'anonymous',
-          'consumer_secret' :  'anonymous',
-          'scope'           :  'https://docs.google.com/feeds/',
-          'app_name'        :  'WatchDoc Google Docs Notification Chrome Extension'
-        });
-    gdocs = new GoogleDocs(oauth);
-    gdocs.initialize();
-    gdocs.startPolling();
+    chrome.identity.getAuthToken({ interactive: false }, function(token) {
+	if (token) {
+	    console.log("Token: "+token);
+	    gdocs = new GoogleDocs(token);
+	    gdocs.initialize();
+	    gdocs.startPolling();
+	} else {
+	    console.log("Not logged in or cannot log in.")
+	}
+    });
 }
 
 addLoadEvent(initialize);

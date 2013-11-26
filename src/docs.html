@@ -22,15 +22,12 @@
  *
  *
 -->
-<html>
+<html ng-app>
   <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="docs.css" />
-    <script type="text/javascript" src="common.js"></script>
-    <script type="text/javascript" src="googledocs.js"></script>
-    <script type="text/javascript" src="docs.js"></script>
   </head>
-  <body>
+  <body style="min-width:250px;">
     <div class="feed-entry-template">
       <a class="feed-entry-item-id"></a>
       <div class="feed-entry-title">
@@ -51,8 +48,12 @@
       </div>
       <div id='docs-open-all'><a id='docs-open-all-link'></a></div>
       <div id='feed'></div>
-      <button id='login_button' style='display: none;'></button>
-      <button id='logout_button' style='display: none;'></button>
+      <button id='login' style='display: none;'></button>
+      <button id='logout' style='display: none;'></button>
     </div>
+
+    <script type="text/javascript" src="common.js"></script>
+    <script type="text/javascript" src="googledocs.js"></script>
+    <script type="text/javascript" src="docs.js"></script>
   </body>
 </html>
